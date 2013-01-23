@@ -1,0 +1,22 @@
+# file managed by puppet
+
+# use collectd::type to add custom types
+TypesDB "<%= typesdb %>" "<%= customtypesdb %>"
+
+# use collectd::globals to configure global settings
+Include "<%= globalsconf %>"
+
+# all LoadPlugin directives must appear before <Plugin> blocks
+# they should be loaded automatically
+Include "<%= loadplugins %>"
+
+# use collectd::plugin to manage plugins configuration
+Include "<%= pluginsconfdir %>/*.conf"
+
+# add your custom stuff in here. You'll be able to override any directive
+# defined previously.
+Include "<%= confdir %>/collectd.conf.d/*.conf"
+
+# TODO
+#Include "<%= confdir %>/filters.conf"
+#Include "<%= confdir %>/thresholds.conf"
