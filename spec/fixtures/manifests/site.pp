@@ -18,7 +18,7 @@ node 'single_plugin' {
 
 node 'several_plugins_with_deps' {
   include 'collectd'
-  collectd::plugin { ['rrdtool', 'ping'] : }
+  collectd::plugin { ['rrdtool', 'ping', 'perl'] : }
 }
 
 node 'plugins_with_same_deps' {
