@@ -35,6 +35,8 @@ collectd::config::plugin { 'my postgresql plugin config':
 }
 ```
 
+You'll also find more usage examples in `spec/fixtures/manifests/site.pp`.
+
 Be sure to have a look at the READMEs and comments in the files created under `/etc/collectd/` to make sense of how the configuration is structured.
 
 Classes and Defined Types
