@@ -8,6 +8,52 @@
 #
 class collectd::setup::settings {
 
+  $_redhat_collectd4 = {
+    'apache'          => ['collectd-apache'],
+    'dns'             => ['collectd-dns'],
+    'ipmi'            => ['collectd-ipmi'],
+    'mysql'           => ['collectd-mysql'],
+    'nginx'           => ['collectd-nginx'],
+    'nut'             => ['collectd-nut'],
+    'ping'            => ['collectd-ping'],
+    'postgresql'      => ['collectd-postgresql'],
+    'rrdtool'         => ['collectd-rrdtool'],
+    'sensors'         => ['collectd-sensors'],
+    'snmp'            => ['collectd-snmp'],
+  }
+
+  $_redhat_collectd5 = {
+    'amqp'            => ['collectd-amqp'],
+    'ascent'          => ['collectd-ascent'],
+    'bind'            => ['collectd-bind'],
+    'curl'            => ['collectd-curl'],
+    'curl_json'       => ['collectd-json'],
+    'curl_xml'        => ['collectd-curl_xml'],
+    'dbi'             => ['collectd-dbi'],
+    'email'           => ['collectd-email'],
+    'gmond'           => ['collectd-gmond'],
+    'hddtemp'         => ['collectd-hddtemp'],
+    'iptables'        => ['collectd-iptables'],
+    'java'            => ['collectd-java'],
+    'libvirt'         => ['collectd-libvirt'],
+    'memcachec'       => ['collectd-memcachec'],
+    'network'         => ['collectd-network'],
+    'notify_desktop'  => ['collectd-notify_desktop'],
+    'notify_email'    => ['collectd-notify_email'],
+    'perl'            => ['collectd-perl'],
+    'pinba'           => ['collectd-pinba'],
+    'python'          => ['collectd-python'],
+    'varnish'         => ['collectd-varnish'],
+    'write_http'      => ['collectd-write_http'],
+    'write_riemann'   => ['collectd-write_riemann'],
+  }
+
+  $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
+  $_redhat_pkgs = $_versioncmp ? {
+    true  => $_redhat_collectd4,
+    false => merge($_redhat_collectd4, $_redhat_collectd5)
+  }
+
   # These are packages which are required for the plugins to work correctly.
   # They are declared in collect::package and realize()d on demand.
   # Debian users should read /usr/share/doc/collectd-core/README.Debian.plugins
@@ -63,42 +109,7 @@ class collectd::setup::settings {
       'write_riemann'   => ['libprotobuf-c0'],
     },
 
-    'RedHat' => {
-      'amqp'            => ['collectd-amqp'],
-      'apache'          => ['collectd-apache'],
-      'ascent'          => ['collectd-ascent'],
-      'bind'            => ['collectd-bind'],
-      'curl'            => ['collectd-curl'],
-      'curl_json'       => ['collectd-json'],
-      'curl_xml'        => ['collectd-curl_xml'],
-      'dbi'             => ['collectd-dbi'],
-      'dns'             => ['collectd-dns'],
-      'email'           => ['collectd-email'],
-      'gmond'           => ['collectd-gmond'],
-      'hddtemp'         => ['collectd-hddtemp'],
-      'ipmi'            => ['collectd-ipmi'],
-      'iptables'        => ['collectd-iptables'],
-      'java'            => ['collectd-java'],
-      'libvirt'         => ['collectd-libvirt'],
-      'memcachec'       => ['collectd-memcachec'],
-      'mysql'           => ['collectd-mysql'],
-      'network'         => ['collectd-network'],
-      'nginx'           => ['collectd-nginx'],
-      'notify_desktop'  => ['collectd-notify_desktop'],
-      'notify_email'    => ['collectd-notify_email'],
-      'nut'             => ['collectd-nut'],
-      'perl'            => ['collectd-perl'],
-      'pinba'           => ['collectd-pinba'],
-      'ping'            => ['collectd-ping'],
-      'postgresql'      => ['collectd-postgresql'],
-      'python'          => ['collectd-python'],
-      'rrdtool'         => ['collectd-rrdtool'],
-      'sensors'         => ['collectd-sensors'],
-      'snmp'            => ['collectd-snmp'],
-      'varnish'         => ['collectd-varnish'],
-      'write_http'      => ['collectd-write_http'],
-      'write_riemann'   => ['collectd-write_riemann'],
-    }
+    'RedHat' => $_redhat_pkgs,
   }
 
   # Plugin list generated from collectd's source tree with:
