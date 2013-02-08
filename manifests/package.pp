@@ -11,6 +11,12 @@ class collectd::package {
     ensure => present,
   }
 
+  if ($::osfamily == 'Debian') {
+    package { 'collectd-utils':
+      ensure => present,
+    }
+  }
+
   validate_re($::osfamily, 'Debian|RedHat',
     "Support for \$osfamily '${::osfamily}' not yet implemented.")
 
