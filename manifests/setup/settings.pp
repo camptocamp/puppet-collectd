@@ -60,6 +60,7 @@ class collectd::setup::settings {
       'uuid'            => ['libdbus-1-3', 'libhal1'],
       'varnish'         => ['libvarnishapi1'],
       'write_http'      => ['libcurl3-gnutls'],
+      'write_riemann'   => ['libprotobuf-c0'],
     },
 
     'RedHat' => {
@@ -96,6 +97,7 @@ class collectd::setup::settings {
       'snmp'            => ['collectd-snmp'],
       'varnish'         => ['collectd-varnish'],
       'write_http'      => ['collectd-write_http'],
+      'write_riemann'   => ['collectd-write_riemann'],
     }
   }
 
@@ -212,6 +214,7 @@ class collectd::setup::settings {
     'write_http',
     'write_mongodb',
     'write_redis',
+    'write_riemann',
     'xmms',
     'zfs_arc',
   ]
