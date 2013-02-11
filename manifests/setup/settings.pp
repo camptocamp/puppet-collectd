@@ -37,7 +37,6 @@ class collectd::setup::settings {
     'java'            => ['collectd-java'],
     'libvirt'         => ['collectd-libvirt'],
     'memcachec'       => ['collectd-memcachec'],
-    'network'         => ['collectd-network'],
     'notify_desktop'  => ['collectd-notify_desktop'],
     'notify_email'    => ['collectd-notify_email'],
     'perl'            => ['collectd-perl'],
