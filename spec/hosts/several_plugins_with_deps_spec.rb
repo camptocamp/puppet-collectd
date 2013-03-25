@@ -27,12 +27,22 @@ describe 'several_plugins_with_deps' do
     it { should contain_package('libperl5.14') }
   end
 
-  describe "should install plugin dependencies on RedHat" do
+  describe "should install correct dependencies on RedHat with collectd 5" do
     let :facts do
-      { :osfamily => 'RedHat', :concat_basedir => 'dir' }
+      { :osfamily => 'RedHat', :collectd_version => '5.2.1', :concat_basedir => 'dir' }
     end
 
     it { should contain_package('collectd-ping') }
+    it { should contain_package('collectd-rrdtool') }
+  end
+
+  describe "should install correct dependencies on RedHat with collectd 4" do
+    let :facts do
+      { :osfamily => 'RedHat', :collectd_version => '4.10.8', :concat_basedir => 'dir' }
+    end
+
+    # TODO: this fails because virtual packages are checked
+    #it { should_not contain_package('collectd-ping') }
     it { should contain_package('collectd-rrdtool') }
   end
 end
