@@ -1,0 +1,8 @@
+name 'puppet-collectd'
+version '0.1.0'
+source 'https://github.com/camptocamp/puppet-collectd.git'
+author 'camptocamp'
+license 'Apache'
+summary 'puppet module for collectd'
+description 'Install and configure collectd on Debian and RedHat systems'
+project_page 'https://github.com/camptocamp/puppet-collectd'
