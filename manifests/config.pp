@@ -44,7 +44,16 @@ class collectd::config (
 
   if ($rootdir == '') {
 
-    $typesdb = '/usr/share/collectd/types.db'
+    if ($::osfamily == 'RedHat' and
+      versioncmp($::collectd_version, '4.6') < 0) {
+        $_arch = $::architecture ? {
+          'x86_64' => '64',
+          default  => '',
+        }
+      $typesdb = "/usr/lib${_arch}/collectd/types.db"
+    } else {
+      $typesdb = '/usr/share/collectd/types.db'
+    }
 
     $changes = $::osfamily ? {
       'Debian' => [

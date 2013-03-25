@@ -82,3 +82,7 @@ node 'global_param' {
   collectd::config::global { 'Hostname': value => 'foobar' }
 }
 
+node 'typesdb_path' {
+  include 'collectd'
+}
+
