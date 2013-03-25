@@ -16,7 +16,7 @@ describe 'basic_setup' do
       it { should contain_file('/etc/collectd/collectd.conf') }
     end
 
-    describe "should run collectd servive on #{osfamily}" do
+    describe "should run collectd service on #{osfamily}" do
       it { should contain_service('collectd') }
     end
 
