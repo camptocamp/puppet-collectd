@@ -26,8 +26,8 @@ define collectd::config::plugin ($plugin, $settings='') {
   Collectd::Setup::Loadplugin <| title == $plugin |>
 
   $filename = regsubst($name, '/|\s', '_', 'G')
+  validate_absolute_path($collectd::config::pluginsconfdir)
   $full_pathname = "${collectd::config::pluginsconfdir}/${filename}.conf"
-  validate_absolute_path($full_pathname)
 
   $ensure = $settings ? {
     ''      => absent,
