@@ -26,6 +26,11 @@ node 'plugins_with_same_deps' {
   collectd::plugin { ['apache', 'nginx'] : }
 }
 
+node 'plugins_load_order' {
+  include 'collectd'
+  collectd::plugin { ['ping', 'perl', 'syslog'] : }
+}
+
 node 'custom_intervals' {
   class { 'collectd':
     interval => {

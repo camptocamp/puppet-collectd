@@ -51,9 +51,16 @@ define collectd::setup::loadplugin($interval='default') {
   $target = $collectd::config::loadplugins
   validate_absolute_path($target)
 
+  $order = $name ? {
+    /^(syslog|logfile)$/   => 10, # load logging plugins first
+    /^(perl|python|java)$/ => 20, # then others which have a log callback
+    default                => 50, # then the rest
+  }
+
   concat::fragment { "collectd loadplugin ${name}":
     target  => $target,
     content => $content,
+    order   => $order,
     notify  => Service['collectd'],
   }
 
