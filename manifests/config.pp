@@ -83,6 +83,11 @@ class collectd::config (
     #}
   }
 
+  validate_absolute_path($customtypesdb)
+  Concat::Fragment <| tag == 'collectd_typesdb' |> {
+    target => $customtypesdb,
+  }
+
   file { $confdir:
     ensure       => directory,
     purge        => true,

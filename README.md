@@ -61,6 +61,25 @@ The following classes and types are used behind the scenes, and in most cases yo
  * `collectd::setup::registerplugin`
  * `collectd::setup::settings`
 
+Client-Server setup
+-------------------
+
+To avoid making assumptions on how you're supposed to organise your collectd infrastructure, setting up how metrics are passed along from one node to another is left to you. One caveat you should be aware of though: collectd instances receiving metrics from other ones must know about the Dataset type of these metrics. To ease sharing this information, this puppet module exports them from `collectd::config::type`, which allows easy collection on other nodes. Short example:
+
+If you declare something like this on emitting instance(s):
+
+```Puppet
+collectd::config::type { 'haproxy':
+  value => 'bin:COUNTER:0:U, bout:COUNTER:0:U',
+}
+```
+
+Then you can/should collect the exported Dataset type(s) on the receiving instance(s) using the following statement. This will ensure the above `haproxy` DS is present in `/etc/collectd/custom-types.db`.
+
+```Puppet
+Concat::Fragment <<| tag == 'collectd_typesdb' |>>
+```
+
 Dependencies
 ------------
 
