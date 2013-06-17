@@ -91,3 +91,31 @@ node 'typesdb_path' {
   include 'collectd'
 }
 
+node 'filter_chains' {
+  include 'collectd'
+  collectd::plugin { ['load', 'csv', 'rrdtool']: }
+
+  collectd::config::chain { 'my filter chain':
+    type     => 'postcache',
+    targets  => ['stop', 'write', 'replace'],
+    matches  => ['regex'],
+    settings => '
+<Rule "load average">
+  <Match "regex">
+    Plugin "^load$"
+  </Match>
+  <Target "write">
+    Plugin "csv"
+  </Target>
+  <Target "replace">
+    Host "\\<www\\." ""
+  </Target>
+  Target "stop"
+</Rule>
+
+<Target "write">
+  Plugin "rrdtool"
+</Target>
+',
+  }
+}

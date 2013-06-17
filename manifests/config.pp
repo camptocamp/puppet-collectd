@@ -41,6 +41,7 @@ class collectd::config (
   $globalsconf    = "${confdir}/globals.conf"
   $loadplugins    = "${confdir}/loadplugins.conf"
   $pluginsconfdir = "${confdir}/plugins"
+  $filtersconfdir = "${confdir}/filters"
 
   if ($rootdir == '') {
 
@@ -118,6 +119,26 @@ class collectd::config (
 # Plugin configuration settings come in this directory.
 #
 # Use collectd::config::plugin to add files here, or manually add them in
+# ../collectd.conf.d/ instead.
+#
+# Files added here manually will be removed.
+',
+  }
+
+  file { $filtersconfdir:
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
+    force   => true,
+  }
+
+  file { "${filtersconfdir}/000-README.conf":
+    ensure  => present,
+    content => '# Placeholder file managed by puppet
+#
+# Filter chains configuration come in this directory.
+#
+# Use collectd::config::chain to add files here, or manually add them in
 # ../collectd.conf.d/ instead.
 #
 # Files added here manually will be removed.

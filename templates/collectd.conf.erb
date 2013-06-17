@@ -13,10 +13,12 @@ Include "<%= loadplugins %>"
 # use collectd::plugin to manage plugins configuration
 Include "<%= pluginsconfdir %>/*.conf"
 
+# use collectd::config::chain to setup filter chains
+Include "<%= filtersconfdir %>/*.conf"
+
 # add your custom stuff in here. You'll be able to override any directive
 # defined previously.
 Include "<%= confdir %>/collectd.conf.d/*.conf"
 
 # TODO
-#Include "<%= confdir %>/filters.conf"
 #Include "<%= confdir %>/thresholds.conf"
