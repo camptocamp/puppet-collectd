@@ -48,6 +48,7 @@ This module defines the following classes and defined types:
  * `collectd::config::plugin`
  * `collectd::config::global`
  * `collectd::config::type`
+ * `collectd::config::chain`
 
 There is detailed inline documentation for each of these classes/types.
 
