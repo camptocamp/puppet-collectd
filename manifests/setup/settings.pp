@@ -65,6 +65,7 @@ class collectd::setup::settings {
       'curl'            => ['libcurl3-gnutls'],
       'curl_json'       => $::lsbdistcodename ? {
         /squeeze/ => ['libcurl3-gnutls', 'libyajl1'],
+        /precise/ => ['libcurl3-gnutls', 'libyajl1'],
         default   => ['libcurl3-gnutls', 'libyajl2'],
       },
       'curl_xml'        => ['libcurl3-gnutls', 'libxml2'],
@@ -74,6 +75,7 @@ class collectd::setup::settings {
       'libvirt'         => ['libvirt0', 'libxml2'],
       'memcachec'       => $::lsbdistcodename ? {
         /squeeze/ => ['libmemcached5'],
+        /precise/ => ['libmemcached6'],
         default   => ['libmemcached10'],
       },
       'modbus'          => ['libmodbus5'],
