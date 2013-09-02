@@ -119,3 +119,27 @@ node 'filter_chains' {
 ',
   }
 }
+
+node 'private_flag' {
+  include 'collectd'
+
+  collectd::config::plugin { 'disk plugin configuration':
+    plugin   => 'disk',
+    settings => '# a comment
+Disk "sdd"
+IgnoreSelected false
+',
+  }
+
+  collectd::config::plugin { 'mysql plugin configuration':
+    plugin   => 'mysql',
+    private  => true,
+    settings => '
+<Database localhost>
+  Socket      "/var/lib/mysql/mysql.sock"
+  User        "collectd"
+  Password    "password123"
+</Database>
+',
+  }
+}

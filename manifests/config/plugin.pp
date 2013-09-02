@@ -19,7 +19,19 @@
 #    ',
 #    }
 #
-define collectd::config::plugin ($plugin, $settings='') {
+#    collectd::config::plugin { 'mysql plugin configuration':
+#      plugin   => 'mysql',
+#      private  => true, # will make this config snippet non world-readable
+#      settings => '
+#         <Database localhost>
+#           Socket      "/var/lib/mysql/mysql.sock"
+#           User        "collectd"
+#           Password    "password123"
+#         </Database>
+#    ',
+#    }
+#
+define collectd::config::plugin ($plugin, $settings='', $private=false) {
 
   validate_re($plugin, '^\w+$')
 
@@ -34,8 +46,16 @@ define collectd::config::plugin ($plugin, $settings='') {
     default => present,
   }
 
+  $filemode = $private ? {
+    true    => '0600',
+    'true'  => '0600',
+    'yes'   => '0600',
+    default => '0644',
+  }
+
   file { $full_pathname:
     ensure  => $ensure,
+    mode    => $filemode,
     notify  => Service['collectd'],
     content => "# file managed by puppet
 # configuration '${name}' for plugin '${plugin}'
