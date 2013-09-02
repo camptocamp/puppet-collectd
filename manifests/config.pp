@@ -61,14 +61,19 @@ class collectd::config (
         'set DISABLE 0',
         'set USE_COLLECTDMON 1',
         "set CONFIGFILE ${conffile}",
-        ],
+      ],
       'RedHat' => [
         "set CONFIG ${conffile}",
-        ]
-      }
+      ]
+    }
+
+    $inclfile = $::osfamily ? {
+      'Debian' => '/etc/default/collectd',
+      'RedHat' => '/etc/sysconfig/collectd',
+    }
 
     augeas { 'setup collectd initscript':
-      incl    => '/etc/default/collectd',
+      incl    => $inclfile,
       lens    => 'Shellvars.lns',
       changes => $changes,
     }
