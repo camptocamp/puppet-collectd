@@ -22,7 +22,7 @@ class collectd::setup::settings {
     'snmp'            => ['collectd-snmp'],
   }
 
-  $_redhat_collectd5 = {
+  $_redhat_collectd5rh4_5 = {
     'amqp'            => ['collectd-amqp'],
     'ascent'          => ['collectd-ascent'],
     'bind'            => ['collectd-bind'],
@@ -36,7 +36,6 @@ class collectd::setup::settings {
     'iptables'        => ['collectd-iptables'],
     'java'            => ['collectd-java'],
     'libvirt'         => ['collectd-libvirt'],
-    'lvm'             => ['collectd-lvm'],
     'memcachec'       => ['collectd-memcachec'],
     'netlink'         => ['collectd-netlink'],
     'notify_desktop'  => ['collectd-notify_desktop'],
@@ -49,10 +48,17 @@ class collectd::setup::settings {
     'write_riemann'   => ['collectd-write_riemann'],
   }
 
+  $_redhat_collectd5 = {
+    'lvm'             => ['colectd-lvm'],
+  }
+
   $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
   $_redhat_pkgs = $_versioncmp ? {
     true  => $_redhat_collectd4,
-    false => merge($_redhat_collectd4, $_redhat_collectd5)
+    false => $lsbmajdistrelease ? {
+      /4|5/ => merge($_redhat_collectd4, $_redhat_collectd5rh4_5),
+      default => merge($_redhat_collectd4, $_redhat_collectd5rh4_5, $_redhat_collectd5)
+    }
   }
 
   # These are packages which are required for the plugins to work correctly.
