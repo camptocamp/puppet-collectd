@@ -49,7 +49,7 @@ class collectd::setup::settings {
   }
 
   $_redhat_collectd5 = {
-    'lvm'             => ['colectd-lvm'],
+    'lvm'             => ['collectd-lvm'],
   }
 
   $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
