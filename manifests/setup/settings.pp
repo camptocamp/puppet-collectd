@@ -55,7 +55,7 @@ class collectd::setup::settings {
   $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
   $_redhat_pkgs = $_versioncmp ? {
     true  => $_redhat_collectd4,
-    false => $lsbmajdistrelease ? {
+    false => $::lsbmajdistrelease ? {
       /4|5/ => merge($_redhat_collectd4, $_redhat_collectd5rh4_5),
       default => merge($_redhat_collectd4, $_redhat_collectd5rh4_5, $_redhat_collectd5)
     }
