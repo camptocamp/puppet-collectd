@@ -27,20 +27,16 @@ class collectd::setup::settings {
     'ascent'          => ['collectd-ascent'],
     'bind'            => ['collectd-bind'],
     'curl'            => ['collectd-curl'],
-    'curl_json'       => ['collectd-json'],
     'curl_xml'        => ['collectd-curl_xml'],
     'dbi'             => ['collectd-dbi'],
     'email'           => ['collectd-email'],
-    'gmond'           => ['collectd-gmond'],
     'hddtemp'         => ['collectd-hddtemp'],
-    'iptables'        => ['collectd-iptables'],
     'java'            => ['collectd-java'],
     'libvirt'         => ['collectd-libvirt'],
     'memcachec'       => ['collectd-memcachec'],
     'netlink'         => ['collectd-netlink'],
     'notify_desktop'  => ['collectd-notify_desktop'],
     'notify_email'    => ['collectd-notify_email'],
-    'perl'            => ['collectd-perl'],
     'pinba'           => ['collectd-pinba'],
     'python'          => ['collectd-python'],
     'varnish'         => ['collectd-varnish'],
@@ -49,7 +45,11 @@ class collectd::setup::settings {
   }
 
   $_redhat_collectd5 = {
+    'gmond'           => ['collectd-gmond'],
+    'iptables'        => ['collectd-iptables'],
+    'curl_json'       => ['collectd-json'],
     'lvm'             => ['collectd-lvm'],
+    'perl'            => ['collectd-perl'],
   }
 
   $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
