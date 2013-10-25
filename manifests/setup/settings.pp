@@ -22,7 +22,7 @@ class collectd::setup::settings {
     'snmp'            => ['collectd-snmp'],
   }
 
-  $_redhat_collectd5rh4_5 = {
+  $_redhat5_collectd5 = {
     'amqp'            => ['collectd-amqp'],
     'ascent'          => ['collectd-ascent'],
     'bind'            => ['collectd-bind'],
@@ -56,8 +56,8 @@ class collectd::setup::settings {
   $_redhat_pkgs = $_versioncmp ? {
     true  => $_redhat_collectd4,
     false => $::lsbmajdistrelease ? {
-      /4|5/ => merge($_redhat_collectd4, $_redhat_collectd5rh4_5),
-      default => merge($_redhat_collectd4, $_redhat_collectd5rh4_5, $_redhat_collectd5)
+      '5'     => merge($_redhat_collectd4, $_redhat5_collectd5),
+      default => merge($_redhat_collectd4, $_redhat5_collectd5, $_redhat_collectd5)
     }
   }
 
