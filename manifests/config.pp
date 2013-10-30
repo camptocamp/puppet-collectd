@@ -33,7 +33,6 @@ class collectd::config (
   validate_re($::osfamily, 'Debian|RedHat',
     "Support for \$osfamily '${::osfamily}' not yet implemented.")
 
-  include 'concat::setup'
   include 'collectd::setup::defaultplugins'
 
   $conffile       = "${confdir}/collectd.conf"
