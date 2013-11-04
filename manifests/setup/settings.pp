@@ -22,25 +22,21 @@ class collectd::setup::settings {
     'snmp'            => ['collectd-snmp'],
   }
 
-  $_redhat_collectd5rh4_5 = {
+  $_redhat5_collectd5 = {
     'amqp'            => ['collectd-amqp'],
     'ascent'          => ['collectd-ascent'],
     'bind'            => ['collectd-bind'],
     'curl'            => ['collectd-curl'],
-    'curl_json'       => ['collectd-json'],
     'curl_xml'        => ['collectd-curl_xml'],
     'dbi'             => ['collectd-dbi'],
     'email'           => ['collectd-email'],
-    'gmond'           => ['collectd-gmond'],
     'hddtemp'         => ['collectd-hddtemp'],
-    'iptables'        => ['collectd-iptables'],
     'java'            => ['collectd-java'],
     'libvirt'         => ['collectd-libvirt'],
     'memcachec'       => ['collectd-memcachec'],
     'netlink'         => ['collectd-netlink'],
     'notify_desktop'  => ['collectd-notify_desktop'],
     'notify_email'    => ['collectd-notify_email'],
-    'perl'            => ['collectd-perl'],
     'pinba'           => ['collectd-pinba'],
     'python'          => ['collectd-python'],
     'varnish'         => ['collectd-varnish'],
@@ -49,15 +45,19 @@ class collectd::setup::settings {
   }
 
   $_redhat_collectd5 = {
+    'gmond'           => ['collectd-gmond'],
+    'iptables'        => ['collectd-iptables'],
+    'curl_json'       => ['collectd-json'],
     'lvm'             => ['collectd-lvm'],
+    'perl'            => ['collectd-perl'],
   }
 
   $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
   $_redhat_pkgs = $_versioncmp ? {
     true  => $_redhat_collectd4,
     false => $::lsbmajdistrelease ? {
-      /4|5/ => merge($_redhat_collectd4, $_redhat_collectd5rh4_5),
-      default => merge($_redhat_collectd4, $_redhat_collectd5rh4_5, $_redhat_collectd5)
+      '5'     => merge($_redhat_collectd4, $_redhat5_collectd5),
+      default => merge($_redhat_collectd4, $_redhat5_collectd5, $_redhat_collectd5)
     }
   }
 
