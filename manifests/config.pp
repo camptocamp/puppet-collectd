@@ -88,7 +88,7 @@ class collectd::config (
   }
 
   validate_absolute_path($customtypesdb)
-  Concat::Fragment <| tag == 'collectd_typesdb' |> {
+  Concat::Fragment <<| tag == 'collectd_typesdb' |>> {
     target => $customtypesdb,
   }
 
