@@ -47,7 +47,7 @@ class collectd::setup::settings {
   $_redhat_collectd5 = {
     'gmond'           => ['collectd-gmond'],
     'iptables'        => ['collectd-iptables'],
-    'curl_json'       => ['collectd-json'],
+    'curl_json'       => ['collectd-curl_json'],
     'lvm'             => ['collectd-lvm'],
     'perl'            => ['collectd-perl'],
   }
