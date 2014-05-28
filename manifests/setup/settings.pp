@@ -52,7 +52,7 @@ class collectd::setup::settings {
     'perl'            => ['collectd-perl'],
   }
 
-  $_versioncmp = (versioncmp($::collectd_version, '5') < 0)
+  $_versioncmp = (!defined('$::collectd_version') or versioncmp($::collectd_version, '5') < 0)
   $_redhat_pkgs = $_versioncmp ? {
     true  => $_redhat_collectd4,
     false => $::lsbmajdistrelease ? {
