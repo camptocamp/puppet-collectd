@@ -1,3 +1,31 @@
+def recparse *args
+  hash = args[0]
+  result = args[1] || ""
+  hash.each do |k,v|
+    case [v.class]
+    when [TrueClass], [FalseClass]
+      result << "#{k} :#{v}\n"
+    when [Fixnum], [Float]
+      result << "#{k} #{v}\n"
+    when [String]
+      result << "#{k} \"#{v}\"\n"
+    when [Array]
+      v.each do |vv|
+        recparse({ k => vv},result)
+      end
+    when [Hash]
+      result << "#{k} do\n"
+      recparse(v,result)
+      result << "end\n"
+    when [NilClass]
+      result
+    else
+      fail "collectd_dsl(): Unsupported: #{k} is_a #{v.class}"
+    end
+  end
+  result
+end
+
 module Puppet::Parser::Functions
   newfunction(:collectd_dsl, :type => :rvalue, :doc => <<-EOS
 Returns a collectd configuration snippet, provided ruby code matching the
@@ -17,9 +45,14 @@ EOS
       raise Puppet::ParseError,
         "collectd_dsl(): Wrong number of arguments, given #{args.size} for 1"
     end
-
+    case args[0]
+    when String
+      config = args[0]
+    else
+      config = recparse(args[0])
+    end
     Collectd::DSL.parse do
-      eval(args[0])
+      eval(config)
     end
   end
 end
