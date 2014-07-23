@@ -2,23 +2,21 @@ def recparse *args
   hash = args[0]
   result = args[1] || ""
   hash.each do |k,v|
-    case [v.class]
-    when [TrueClass], [FalseClass]
+    case v
+    when TrueClass, FalseClass
       result << "#{k} :#{v}\n"
-    when [Fixnum], [Float]
+    when Fixnum, Float
       result << "#{k} #{v}\n"
-    when [String]
+    when String
       result << "#{k} \"#{v}\"\n"
-    when [Array]
+    when Array
       v.each do |vv|
         recparse({ k => vv},result)
       end
-    when [Hash]
+    when Hash
       result << "#{k} do\n"
       recparse(v,result)
       result << "end\n"
-    when [NilClass]
-      result
     else
       fail "collectd_dsl(): Unsupported: #{k} is_a #{v.class}"
     end
