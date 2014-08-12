@@ -33,6 +33,27 @@ collectd::config::plugin { 'my postgresql plugin config':
   plugin   => 'postgresql',
   settings => template('/path/to/some/template.erb'),
 }
+
+collectd::config::plugin { 'my plugin with hashed config':
+  plugin   => 'interface',
+  settings => {
+    'interface'       => ['lo','sit0'],
+    'ignore_selected' => true
+  }
+}
+
+collectd::config::plugin { 'another one':
+  plugin   => 'df',
+  settings => {
+    'mount_point'       => [ '/afs', '/boot', '/proc' ],
+    'fs_type'           => [ 'nfs', 'devpts', 'iso9660' ],
+    'ignore_selected'   => true,
+    'values_percentage' => true,
+    'report_inodes'     => true,
+    'report_by_device'  => false
+  }
+}
+
 ```
 
 You'll also find more usage examples in `spec/fixtures/manifests/site.pp`.
@@ -97,6 +118,51 @@ collectd::config::plugin { 'configure df':
   '),
 }
 ```
+
+Moreover, if `settings` is given a Hash, it will call `collectd_dsl()` using a recursive procedure, where nested hashes will be treated as new blocks for `collectd_dsl()`, and arrays will cause multiple lines with the same key.
+
+The following code:
+
+```Puppet
+collectd::config::plugin { 'threshold_processes':
+  plugin   => 'threshold',
+  settings => {
+    'plugin "processes"' => {
+      'type "fork_rate"' => {
+        'percentage' => false,
+        'warning_max' => 1 * 1500
+      }
+    }
+  }
+}
+```
+will lead to the following collectd config:
+```XML
+<Plugin threshold>
+  <Plugin "processes">
+    <Type "fork_rate">
+      Percentage false
+      WarningMax 1500
+    </Type>
+  </Plugin>
+</Plugin>
+```
+
+Note the way `collectd_dsl()` does the conversion of all the keys to CamelCase, and observe how the boolean is correctly translated to an unquoted keyword in collectd (which is important because collectd's liboconfig grammar is typed). Also note the necessity to pass the number `1500` in numeric context by mulitplying it by `1`, as puppet < 4.x would treat it as a regular string, which would cause the collectd threshold plugin to fail.
+
+Here is the same config as it would appear in hiera:
+
+```YAML
+threshold_processes:
+  plugin: threshold
+  settings:
+    'plugin "processes"':
+      "type fork_rate":
+        percentage: false
+        warning_max: 1500
+```
+
+Note that hiera correctly types both booleans and numbers.
 
 Tests
 -----
