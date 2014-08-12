@@ -36,12 +36,13 @@
 #    ',
 #    }
 #
-define collectd::config::chain ($type, $settings='', $targets=[], $matches=[]) {
+define collectd::config::chain ($type='none', $settings='', $targets=[], $matches=[]) {
 
-  validate_re($type, '^(pre|post)cache$')
+  validate_re($type, '^(precache|postcache|none)$')
   $chain_type = $type ? {
     'precache'  => 'PreCacheChain',
     'postcache' => 'PostCacheChain',
+    'none'      => 'none',
   }
 
   $builtin_targets = ['return', 'stop', 'write', 'jump']
@@ -62,13 +63,15 @@ define collectd::config::chain ($type, $settings='', $targets=[], $matches=[]) {
   file { $full_pathname:
     ensure  => $ensure,
     notify  => Service['collectd'],
-    content => "# file managed by puppet
-# filter chain '${name}'
-${chain_type} \"${name}\"
-<Chain \"${name}\">
-${settings}
+    content => inline_template('# file managed by puppet
+# filter chain "<%= name %>"
+<% unless chain_type == "none" -%>
+<%= chain_type %> "<%= name %>"
+<% end -%>
+<Chain "<%= name %>">
+<%= settings %>
 </Chain>
-",
+'),
   }
 
 }
