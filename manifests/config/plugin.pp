@@ -35,13 +35,19 @@ define collectd::config::plugin ($plugin, $settings='', $private=false) {
 
   validate_re($plugin, '^\w+$')
 
+  if is_string($settings) {
+    $settings_r = $settings
+  } else {
+    $settings_r = collectd_dsl($settings)
+  }
+
   Collectd::Setup::Loadplugin <| title == $plugin |>
 
   $filename = regsubst($name, '/|\s', '_', 'G')
   validate_absolute_path($collectd::config::pluginsconfdir)
   $full_pathname = "${collectd::config::pluginsconfdir}/${filename}.conf"
 
-  $ensure = $settings ? {
+  $ensure = $settings_r ? {
     ''      => absent,
     default => present,
   }
@@ -60,7 +66,7 @@ define collectd::config::plugin ($plugin, $settings='', $private=false) {
     content => "# file managed by puppet
 # configuration '${name}' for plugin '${plugin}'
 <Plugin \"${plugin}\">
-${settings}
+${settings_r}
 </Plugin>
 ",
   }
