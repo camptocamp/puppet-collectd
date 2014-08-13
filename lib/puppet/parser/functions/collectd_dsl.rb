@@ -1,8 +1,3 @@
-class String
-    def is_number?
-       true if Float(self) rescue false
-    end
-end
 def recparse *args
   hash = args[0]
   result = args[1] || ""
@@ -13,12 +8,7 @@ def recparse *args
     when Fixnum, Float
       result << "#{k} #{v}\n"
     when String
-      # this is needed as puppet will pass a number as a string
-      if (v.is_number?) then
-        result << "#{k} #{v}\n"
-      else
-        result << "#{k} \"#{v}\"\n"
-      end
+      result << "#{k} \"#{v}\"\n"
     when Array
       v.each do |vv|
         recparse({ k => vv},result)
