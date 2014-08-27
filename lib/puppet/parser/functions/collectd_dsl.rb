@@ -1,7 +1,7 @@
 def recparse *args
   hash = args[0]
   result = args[1] || ""
-  hash.each do |k,v|
+  hash.sort.each do |k,v|
     case v
     when TrueClass, FalseClass
       result << "#{k} :#{v}\n"
