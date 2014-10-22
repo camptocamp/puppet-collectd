@@ -10,6 +10,8 @@
 #
 #  [*interval*]: - See collectd::config
 #
+#  [*version*]: - See collectd::package
+#
 # Sample Usage:
 #
 #    class { 'collectd':
@@ -24,9 +26,12 @@ class collectd (
   $confdir  = '/etc/collectd',
   $rootdir  = '',
   $interval = {},
+  $version  = 'present',
 ) {
 
-  class { 'collectd::package': } ->
+  class { 'collectd::package':
+    version => $version,
+  } ->
   class { 'collectd::config':
     confdir  => $confdir,
     rootdir  => $rootdir,

@@ -3,12 +3,17 @@
 # Installs the collectd package and declares virtual resources for each
 # dependency package defined in `collectd::setup::settings`.
 #
-class collectd::package {
+# Parameters:
+#  [*version*]: - Specify package version to install, by default installs
+#                 whatever version the package manager prefers.
+#
+#
+class collectd::package($version='present') {
 
   include 'collectd::setup::settings'
 
   package { 'collectd':
-    ensure => present,
+    ensure => $version,
   }
 
   if ($::osfamily == 'Debian') {
