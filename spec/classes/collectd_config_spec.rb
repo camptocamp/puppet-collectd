@@ -12,7 +12,10 @@ describe 'collectd::config' do
   ['Debian', 'RedHat'].each do |osfamily|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      { :osfamily => osfamily,
+        :concat_basedir => 'dir',
+        :lsbmajdistrelease => '6',
+      }
     end
 
     [ '/etc/collectd',
@@ -34,6 +37,18 @@ describe 'collectd::config' do
       end
     end
 
+  end
+
+  let :facts do
+    { :osfamily => 'RedHat',
+      :concat_basedir => 'dir',
+      :lsbmajdistrelease => '7',
+    }
+  end
+
+  file = '/etc/collectd.conf'
+  describe "should manage file #{file} on RedHat 7" do
+    it { should contain_file(file).with_ensure('present') }
   end
 
 end
