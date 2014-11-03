@@ -55,26 +55,33 @@ class collectd::config (
       $typesdb = '/usr/share/collectd/types.db'
     }
 
-    $changes = $::osfamily ? {
-      'Debian' => [
-        'set DISABLE 0',
-        'set USE_COLLECTDMON 1',
-        "set CONFIGFILE ${conffile}",
-      ],
-      'RedHat' => [
-        "set CONFIG ${conffile}",
-      ]
-    }
+    if $::osfamily == 'RedHat' and $::lsbmajdistrelease >= '7' {
+      # RedHat 7 uses systemd and config file path cannot be overridden
+      file {'/etc/collectd.conf':
+        content => "# File managed by puppet\nInclude \"${conffile}\"\n",
+      }
+    } else {
+      $changes = $::osfamily ? {
+        'Debian' => [
+          'set DISABLE 0',
+          'set USE_COLLECTDMON 1',
+          "set CONFIGFILE ${conffile}",
+        ],
+        'RedHat' => [
+          "set CONFIG ${conffile}",
+        ]
+      }
 
-    $inclfile = $::osfamily ? {
-      'Debian' => '/etc/default/collectd',
-      'RedHat' => '/etc/sysconfig/collectd',
-    }
+      $inclfile = $::osfamily ? {
+        'Debian' => '/etc/default/collectd',
+        'RedHat' => '/etc/sysconfig/collectd',
+      }
 
-    augeas { 'setup collectd initscript':
-      incl    => $inclfile,
-      lens    => 'Shellvars.lns',
-      changes => $changes,
+      augeas { 'setup collectd initscript':
+        incl    => $inclfile,
+        lens    => 'Shellvars.lns',
+        changes => $changes,
+      }
     }
 
   } else {
