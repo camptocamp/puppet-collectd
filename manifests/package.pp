@@ -18,7 +18,7 @@ class collectd::package($version='present') {
 
   if ($::osfamily == 'Debian') {
     package { 'collectd-utils':
-      ensure => present,
+      ensure => $version,
     }
   }
 
@@ -34,7 +34,7 @@ class collectd::package($version='present') {
   validate_array($deplist)
 
   @package { $deplist:
-    ensure => present,
+    ensure => $version,
     before => Service['collectd'],
     tag    => 'virtualresource', # see puppet bug #18444
   }
