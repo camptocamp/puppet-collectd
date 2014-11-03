@@ -17,7 +17,13 @@ class collectd::package($version='present') {
   }
 
   if ($::osfamily == 'Debian') {
-    package { 'collectd-utils':
+    package { ['collectd-utils', 'libcollectdclient1']:
+      ensure => $version,
+    }
+  }
+
+  if ($::osfamily == 'RedHat') {
+    package { ['libcollectdclient']:
       ensure => $version,
     }
   }
