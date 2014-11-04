@@ -31,7 +31,7 @@ class collectd (
 
   class { 'collectd::package':
     version => $version,
-  } ->
+  } ~>
   class { 'collectd::config':
     confdir  => $confdir,
     rootdir  => $rootdir,
