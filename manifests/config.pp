@@ -77,6 +77,13 @@ class collectd::config (
       changes => $changes,
     }
 
+    if ($::osfamily == 'RedHat') {
+      file { '/etc/collectd.conf':
+        ensure => link,
+        target => $conffile,
+      }
+    }
+
   } else {
 
     $typesdb = "${rootdir}/types.db"
