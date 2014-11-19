@@ -18,9 +18,9 @@ class collectd::setup::settings {
       'ascent'          => ['libcurl3-gnutls', 'libxml2'],
       'bind'            => ['libcurl3-gnutls', 'libxml2'],
       'curl'            => ['libcurl3-gnutls'],
-      'curl_json'       => $::lsbdistcodename ? {
-        /squeeze/ => ['libcurl3-gnutls', 'libyajl1'],
-        /precise/ => ['libcurl3-gnutls', 'libyajl1'],
+      'curl_json'       => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libcurl3-gnutls', 'libyajl1'],
+        /Ubuntu12.04/ => ['libcurl3-gnutls', 'libyajl1'],
         default   => ['libcurl3-gnutls', 'libyajl2'],
       },
       'curl_xml'        => ['libcurl3-gnutls', 'libxml2'],
@@ -35,14 +35,14 @@ class collectd::setup::settings {
         default   => ['libyajl2'],
       },
       'lvm'             => ['liblvm2app2.2'],
-      'memcachec'       => $::lsbdistcodename ? {
-        /squeeze/ => ['libmemcached5'],
-        /precise/ => ['libmemcached6'],
+      'memcachec'       => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libmemcached5'],
+        /Ubuntu12.04/ => ['libmemcached6'],
         default   => ['libmemcached10'],
       },
       'modbus'          => ['libmodbus5'],
-      'mysql'           => $::lsbdistcodename ? {
-        /squeeze/ => ['libmysqlclient16'],
+      'mysql'           => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libmysqlclient16'],
         default   => ['libmysqlclient18'],
       },
       'network'         => ['libgcrypt11'],
@@ -52,15 +52,15 @@ class collectd::setup::settings {
       'notify_email'    => ['libesmtp6', 'libssl1.0.0'],
       'nut'             => ['libupsclient1'],
       'openldap'        => ['libldap-2.4-2'],
-      'perl'            => $::lsbdistcodename ? {
-        /squeeze/ => ['libperl5.10'],
+      'perl'            => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libperl5.10'],
         default   => ['libperl5.14'],
       },
       'pinba'           => ['libprotobuf-c0'],
       'ping'            => ['liboping0'],
       'postgresql'      => ['libpq5'],
-      'python'          => $::lsbdistcodename ? {
-        /squeeze/ => ['libpython2.6'],
+      'python'          => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libpython2.6'],
         default   => ['libpython2.7'],
       },
       'rrdcached'       => ['librrd4'],
