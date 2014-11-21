@@ -63,6 +63,7 @@ class collectd::setup::settings {
         /Debian6/ => ['libpython2.6'],
         default   => ['libpython2.7'],
       },
+      'redis'           => ['libhiredis0.10'],
       'rrdcached'       => ['librrd4'],
       'rrdtool'         => ['librrd4'],
       'sensors'         => ['lm-sensors', 'libsensors4'],
@@ -74,6 +75,7 @@ class collectd::setup::settings {
       'virt'            => ['libvirt0', 'libxml2'],
       'write_http'      => ['libcurl3-gnutls'],
       'write_kafka'     => ['librdkafka1'],
+      'write_redis'     => ['libhiredis0.10'],
       'write_riemann'   => ['libprotobuf-c0'],
     },
 
@@ -111,6 +113,7 @@ class collectd::setup::settings {
       'ping'            => ['collectd-ping'],
       'postgresql'      => ['collectd-postgresql'],
       'python'          => ['collectd-python'],
+      'redis'           => ['collectd-redis'],
       'rrdcached'       => ['collectd-rrdcached'],
       'rrdtool'         => ['collectd-rrdtool'],
       'sensors'         => ['collectd-sensors'],
@@ -119,6 +122,7 @@ class collectd::setup::settings {
       'varnish'         => ['collectd-varnish'],
       'virt'            => ['collectd-virt'],
       'write_http'      => ['collectd-write_http'],
+      'write_redis'     => ['collectd-write_redis'],
       'write_riemann'   => ['collectd-write_riemann'],
     },
   }
