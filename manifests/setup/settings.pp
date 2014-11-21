@@ -29,9 +29,9 @@ class collectd::setup::settings {
       'dns'             => ['libpcap0.8'],
       'ipmi'            => ['libopenipmi0'],
       'libvirt'         => ['libvirt0', 'libxml2'],
-      'log_logstash'    => $::lsbdistcodename ? {
-        /squeeze/ => ['libyajl1'],
-        /precise/ => ['libyajl1'],
+      'log_logstash'    => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian6/ => ['libyajl1'],
+        /Ubuntu12.04/ => ['libyajl1'],
         default   => ['libyajl2'],
       },
       'lvm'             => ['liblvm2app2.2'],
