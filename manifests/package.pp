@@ -39,8 +39,13 @@ class collectd::package($version='present') {
 
   validate_array($deplist)
 
+  $dep_ensure = $version ? {
+    'absent' => 'absent',
+    default  => 'present',
+  }
+
   @package { $deplist:
-    ensure => $version,
+    ensure => $dep_ensure,
     before => Service['collectd'],
     tag    => 'virtualresource', # see puppet bug #18444
   }
