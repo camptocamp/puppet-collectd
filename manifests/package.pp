@@ -19,43 +19,43 @@ class collectd::package(
   
   if $manage_package {
 
-  package { 'collectd':
-    ensure => $version,
-  }
-
-  if ($::osfamily == 'Debian') {
-    package { ['collectd-utils', 'libcollectdclient1']:
+    package { 'collectd':
       ensure => $version,
     }
-  }
 
-  if ($::osfamily == 'RedHat') {
-    package { ['libcollectdclient']:
-      ensure => $version,
+    if ($::osfamily == 'Debian') {
+      package { ['collectd-utils', 'libcollectdclient1']:
+        ensure => $version,
+      }
     }
-  }
 
-  validate_re($::osfamily, 'Debian|RedHat',
-    "Support for \$osfamily '${::osfamily}' not yet implemented.")
+    if ($::osfamily == 'RedHat') {
+      package { ['libcollectdclient']:
+        ensure => $version,
+      }
+    }
 
-  $plugindeps = $collectd::setup::settings::plugindeps
+    validate_re($::osfamily, 'Debian|RedHat',
+      "Support for \$osfamily '${::osfamily}' not yet implemented.")
 
-  validate_hash($plugindeps)
+    $plugindeps = $collectd::setup::settings::plugindeps
 
-  $deplist = unique(flatten(values($plugindeps[$::osfamily])))
+    validate_hash($plugindeps)
 
-  validate_array($deplist)
+    $deplist = unique(flatten(values($plugindeps[$::osfamily])))
 
-  $dep_ensure = $version ? {
-    'absent' => 'absent',
-    default  => 'present',
-  }
+    validate_array($deplist)
 
-  @package { $deplist:
-    ensure => $dep_ensure,
-    before => Service['collectd'],
-    tag    => 'virtualresource', # see puppet bug #18444
-  }
-  
+    $dep_ensure = $version ? {
+      'absent' => 'absent',
+      default  => 'present',
+    }
+
+    @package { $deplist:
+      ensure => $dep_ensure,
+      before => Service['collectd'],
+      tag    => 'virtualresource', # see puppet bug #18444
+    }
+
   }
 }
