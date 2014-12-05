@@ -1,11 +1,15 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'single_plugin' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts.merge(
+        {}
+      )
     end
 
     describe "should load a plugin on #{osfamily}" do

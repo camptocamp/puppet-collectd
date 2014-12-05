@@ -1,10 +1,12 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'several_plugins_with_deps' do
 
   describe "should install plugin dependencies on Debian" do
     let :facts do
-      { :osfamily => 'Debian', :concat_basedir => 'dir' }
+      os_facts['Debian']
     end
 
     it { should contain_package('liboping0') }
@@ -13,7 +15,9 @@ describe 'several_plugins_with_deps' do
 
   describe "should install correct dependency version on Debian/squeeze" do
     let :facts do
-      { :osfamily => 'Debian', :lsbdistcodename => 'squeeze', :concat_basedir => 'dir' }
+      os_facts['Debian'].merge(
+        { :lsbdistcodename => 'squeeze' }
+      )
     end
 
     it { should contain_package('libperl5.10') }
@@ -21,7 +25,9 @@ describe 'several_plugins_with_deps' do
 
   describe "should install correct dependency version on Debian/wheezy" do
     let :facts do
-      { :osfamily => 'Debian', :lsbdistcodename => 'wheezy', :concat_basedir => 'dir' }
+      os_facts['Debian'].merge(
+        { :lsbdistcodename => 'wheezy' }
+      )
     end
 
     it { should contain_package('libperl5.14') }
@@ -29,7 +35,9 @@ describe 'several_plugins_with_deps' do
 
   describe "should install correct dependencies on RedHat with collectd 5" do
     let :facts do
-      { :osfamily => 'RedHat', :collectd_version => '5.2.1', :concat_basedir => 'dir' }
+      os_facts['RedHat'].merge(
+        { :collectd_version => '5.2.1' }
+      )
     end
 
     it { should contain_package('collectd-ping') }
@@ -38,7 +46,9 @@ describe 'several_plugins_with_deps' do
 
   describe "should install correct dependencies on RedHat with collectd 4" do
     let :facts do
-      { :osfamily => 'RedHat', :collectd_version => '4.10.8', :concat_basedir => 'dir' }
+      os_facts['RedHat'].merge(
+        { :collectd_version => '4.10.8' }
+      )
     end
 
     # TODO: this fails because virtual packages are checked

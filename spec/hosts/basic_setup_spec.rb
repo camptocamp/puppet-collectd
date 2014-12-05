@@ -1,11 +1,16 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+os_unsupported_facts = @os_unsupported_facts
+
 describe 'basic_setup' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts.merge(
+        {}
+      )
     end
 
     describe "should install collectd package on #{osfamily}" do
@@ -22,9 +27,11 @@ describe 'basic_setup' do
 
   end
 
-  describe "it should fail on unsupported osfamilies" do
+  os_unsupported_facts.each do |osfamily, facts|
+
+  describe "it should fail on unsupported osfamilies e.g. %{osfamily}" do
     let :facts do
-      { :osfamily => 'MS-DOS', :concat_basedir => 'dir' }
+      facts
     end
 
     it do
@@ -33,4 +40,7 @@ describe 'basic_setup' do
       }.to raise_error(Puppet::Error, /Support .* not yet implemented/)
     end
   end
+  
+  end
+
 end

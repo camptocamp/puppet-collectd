@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'collectd::config' do
   let(:params) {
      {
@@ -9,10 +11,10 @@ describe 'collectd::config' do
     }
   }
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts
     end
 
     [ '/etc/collectd',
