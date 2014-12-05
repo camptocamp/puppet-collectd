@@ -8,9 +8,16 @@
 #                 whatever version the package manager prefers.
 #
 #
-class collectd::package($version='present') {
+class collectd::package(
+  $version='present',
+  $manage_package = true
+) {
 
   include 'collectd::setup::settings'
+
+  validate_bool($manage_package)
+  
+  if $manage_package {
 
   package { 'collectd':
     ensure => $version,
@@ -48,5 +55,7 @@ class collectd::package($version='present') {
     ensure => $dep_ensure,
     before => Service['collectd'],
     tag    => 'virtualresource', # see puppet bug #18444
+  }
+  
   }
 }

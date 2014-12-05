@@ -56,6 +56,14 @@ collectd::config::plugin { 'another one':
 
 ```
 
+If you want to completely disable package management, do the following:
+
+```puppet
+class { 'collectd':
+  manage_package => false
+}
+```
+
 You'll also find more usage examples in `spec/fixtures/manifests/site.pp`.
 
 Be sure to have a look at the READMEs and comments in the files created under `/etc/collectd/` to make sense of how the configuration is structured.
