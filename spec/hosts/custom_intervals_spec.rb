@@ -1,17 +1,18 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'custom_intervals' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     describe "plugins loaded with intervals on #{osfamily}" do
 
       describe "should work since 5.2" do
         let :facts do
-          { :collectd_version => '5.2.0',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '5.2.0' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin cpu').with(
@@ -31,10 +32,9 @@ describe 'custom_intervals' do
 
       describe "should get ignored before 5.2" do
         let :facts do
-          { :collectd_version => '5.1.99',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '5.1.99' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin cpu').with(

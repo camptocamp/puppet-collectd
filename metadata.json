@@ -1,0 +1,15 @@
+{
+  "name": "puppet-collectd",
+  "version": "0.1.0",
+  "author": "camptocamp",
+  "license": "Apache",
+  "source": "https://github.com/camptocamp/puppet-collectd.git",
+  "project_page": "https://github.com/camptocamp/puppet-collectd",
+  "issues_url": null,
+	"summary": "Install and configure collectd on Debian and RedHat systems",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib"
+    }
+  ]
+}

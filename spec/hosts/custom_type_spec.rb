@@ -1,11 +1,13 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'custom_type' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts
     end
 
     describe "should define a custom type on #{osfamily}" do

@@ -1,11 +1,15 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'plugin_autoload_only_load_once' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts.merge(
+        {}
+      )
     end
 
     # lousy test, but if there was a duplicate definition error, the catalog

@@ -27,10 +27,12 @@ class collectd (
   $rootdir  = '',
   $interval = {},
   $version  = 'present',
+  $manage_package = true
 ) {
 
   class { 'collectd::package':
-    version => $version,
+    version        => $version,
+    manage_package => $manage_package
   } ~>
   class { 'collectd::config':
     confdir  => $confdir,

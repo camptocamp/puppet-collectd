@@ -1,11 +1,13 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'global_param' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts
     end
 
     describe "should define global params on #{osfamily}" do

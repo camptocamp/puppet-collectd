@@ -1,11 +1,10 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'plugins_with_same_deps' do
   let :facts do
-    {
-      :osfamily => 'Debian', # this problem doesn't affect redhat
-      :concat_basedir => 'dir'
-    }
+    os_facts['Debian'] # this problem doesn't affect redhat
   end
 
   # lousy test, but if there was a duplicate definition error, the catalog

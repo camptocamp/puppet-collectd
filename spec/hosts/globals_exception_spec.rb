@@ -1,17 +1,18 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'globals_exception' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     describe "only perl and python plugins on #{osfamily}" do
 
       describe "should not include 'Globals' option before 4.9" do
         let :facts do
-          { :collectd_version => '4.8.99',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '4.8.99' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin perl').with(
@@ -29,10 +30,9 @@ describe 'globals_exception' do
 
       describe "should include 'Globals' option on 4.9" do
         let :facts do
-          { :collectd_version => '4.9.0',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '4.9.0' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin perl').with(
@@ -66,10 +66,9 @@ describe 'globals_exception' do
 
       describe "should include 'Globals' option on 4.10" do
         let :facts do
-          { :collectd_version => '4.10.99',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '4.10.99' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin perl').with(
@@ -103,10 +102,9 @@ describe 'globals_exception' do
 
       describe "should not include 'Globals' option after 5.0" do
         let :facts do
-          { :collectd_version => '5.0.0',
-            :osfamily => osfamily,
-            :concat_basedir => 'dir'
-          }
+          facts.merge(
+            { :collectd_version => '5.0.0' }
+          )
         end
 
         it { should contain_concat__fragment('collectd loadplugin perl').with(

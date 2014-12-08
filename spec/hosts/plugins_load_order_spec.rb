@@ -1,11 +1,15 @@
 require 'spec_helper'
 
+os_facts = @os_facts
+
 describe 'plugins_load_order' do
 
-  ['Debian', 'RedHat'].each do |osfamily|
+  os_facts.each do |osfamily, facts|
 
     let :facts do
-      { :osfamily => osfamily, :concat_basedir => 'dir' }
+      facts.merge(
+        {}
+      )
     end
 
     describe "should load log plugins first on #{osfamily}" do

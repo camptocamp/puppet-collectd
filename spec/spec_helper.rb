@@ -23,3 +23,35 @@ RSpec.configure do |c|
     PuppetlabsSpec::Files.cleanup
   end
 end
+
+@common_facts = {
+  :id => '0',
+  :path => '/',
+  :concat_basedir => 'dir',
+  :collectd_version => '5',
+}
+@os_facts = {
+  'RedHat' => @common_facts.merge(
+    {
+      :osfamily => 'RedHat',
+      :operatingsystem => 'RedHat',
+      :operatingsystemmajrelease => 4,
+    }
+  ),
+  'Debian' => @common_facts.merge(
+    {
+      :osfamily => 'Debian',
+      :operatingsystem => 'Debian',
+      :operatingsystemmajrelease => 5,
+    }
+  ),
+}
+@os_unsupported_facts = {
+  'MS-DOS' => @common_facts.merge(
+    {
+      :osfamily => 'MS-DOS',
+      :operatingsystem => 'MS-DOS',
+      :operatingsystemmajrelease => 3,
+    }
+  )
+}
