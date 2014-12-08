@@ -16,7 +16,7 @@ class collectd::package(
   include 'collectd::setup::settings'
 
   validate_bool($manage_package)
-  
+
   if $manage_package {
 
     package { 'collectd':
@@ -24,7 +24,7 @@ class collectd::package(
     }
 
     if ($::osfamily == 'Debian') {
-      package { ['collectd-utils', 'libcollectdclient1']:
+      package { ['collectd-core', 'collectd-utils', 'libcollectdclient1']:
         ensure => $version,
       }
     }
