@@ -1,41 +1,45 @@
 require 'spec_helper'
 
-os_facts = @os_facts
-
 describe 'collectd::config' do
   let(:params) {
-     {
-       :confdir  => '/etc/collectd',
-       :rootdir  => '',
-       :interval => {},
+    {
+      :confdir  => '/etc/collectd',
+      :rootdir  => '',
+      :interval => {},
     }
   }
 
-  os_facts.each do |osfamily, facts|
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts.merge({
+          :collectd_version => '5',
+          :concat_basedir   => '/foo',
+        })
+      end
 
-    let :facts do
-      facts
-    end
+      [
+        '/etc/collectd',
+        '/etc/collectd/collectd.conf.d',
+        '/etc/collectd/plugins'
+      ].each do |dir|
 
-    [ '/etc/collectd',
-      '/etc/collectd/collectd.conf.d',
-      '/etc/collectd/plugins' ].each do |dir|
+        describe "should create directory #{dir}" do
+          it { should contain_file(dir).with('ensure' => 'directory') }
+        end
+      end
 
-      describe "should create directory #{dir} on #{osfamily}" do
-        it { should contain_file(dir).with('ensure' => 'directory') }
+      [
+        '/etc/collectd/collectd.conf',
+        '/etc/collectd/custom-types.db',
+        '/etc/collectd/globals.conf',
+        '/etc/collectd/loadplugins.conf'
+      ].each do |file|
+
+        describe "should manage file #{file}" do
+          it { should contain_file(file).with_ensure('present') }
+        end
       end
     end
-
-    [ '/etc/collectd/collectd.conf',
-      '/etc/collectd/custom-types.db',
-      '/etc/collectd/globals.conf',
-      '/etc/collectd/loadplugins.conf' ].each do |file|
-
-      describe "should manage file #{file} on #{osfamily}" do
-        it { should contain_file(file).with_ensure('present') }
-      end
-    end
-
   end
-
 end

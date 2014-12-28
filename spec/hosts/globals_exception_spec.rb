@@ -1,125 +1,131 @@
 require 'spec_helper'
 
-os_facts = @os_facts
-
 describe 'globals_exception' do
 
-  os_facts.each do |osfamily, facts|
-
-    describe "only perl and python plugins on #{osfamily}" do
-
-      describe "should not include 'Globals' option before 4.9" do
-        let :facts do
-          facts.merge(
-            { :collectd_version => '4.8.99' }
-          )
-        end
-
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^LoadPlugin.+perl/
-        ) }
-
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^LoadPlugin.+python/
-        ) }
-
-        it { should contain_concat__fragment('collectd loadplugin java').with(
-          :content => /^LoadPlugin.+java/
-        ) }
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts.merge({
+          :collectd_version => '5',
+          :concat_basedir   => '/foo',
+        })
       end
 
-      describe "should include 'Globals' option on 4.9" do
-        let :facts do
-          facts.merge(
-            { :collectd_version => '4.9.0' }
-          )
+      describe "only perl and python plugins" do
+
+        describe "should not include 'Globals' option before 4.9" do
+          let :facts do
+            super().merge(
+              { :collectd_version => '4.8.99' }
+            )
+          end
+
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^LoadPlugin.+perl/
+          ) }
+
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^LoadPlugin.+python/
+          ) }
+
+          it { should contain_concat__fragment('collectd loadplugin java').with(
+            :content => /^LoadPlugin.+java/
+          ) }
         end
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^<LoadPlugin.+perl/
-        ) }
+        describe "should include 'Globals' option on 4.9" do
+          let :facts do
+            super().merge(
+              { :collectd_version => '4.9.0' }
+            )
+          end
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /Globals.+true/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^<LoadPlugin.+perl/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^<\/LoadPlugin>/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /Globals.+true/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^<LoadPlugin.+python/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^<\/LoadPlugin>/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /Globals.+true/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^<LoadPlugin.+python/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^<\/LoadPlugin>/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /Globals.+true/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin java').with(
-          :content => /^LoadPlugin.+java/
-        ) }
-      end
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^<\/LoadPlugin>/
+          ) }
 
-      describe "should include 'Globals' option on 4.10" do
-        let :facts do
-          facts.merge(
-            { :collectd_version => '4.10.99' }
-          )
+          it { should contain_concat__fragment('collectd loadplugin java').with(
+            :content => /^LoadPlugin.+java/
+          ) }
         end
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^<LoadPlugin.+perl/
-        ) }
+        describe "should include 'Globals' option on 4.10" do
+          let :facts do
+            super().merge(
+              { :collectd_version => '4.10.99' }
+            )
+          end
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /Globals.+true/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^<LoadPlugin.+perl/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^<\/LoadPlugin>/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /Globals.+true/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^<LoadPlugin.+python/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^<\/LoadPlugin>/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /Globals.+true/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^<LoadPlugin.+python/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^<\/LoadPlugin>/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /Globals.+true/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin java').with(
-          :content => /^LoadPlugin.+java/
-        ) }
-      end
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^<\/LoadPlugin>/
+          ) }
 
-      describe "should not include 'Globals' option after 5.0" do
-        let :facts do
-          facts.merge(
-            { :collectd_version => '5.0.0' }
-          )
+          it { should contain_concat__fragment('collectd loadplugin java').with(
+            :content => /^LoadPlugin.+java/
+          ) }
         end
 
-        it { should contain_concat__fragment('collectd loadplugin perl').with(
-          :content => /^LoadPlugin.+perl/
-        ) }
+        describe "should not include 'Globals' option after 5.0" do
+          let :facts do
+            super().merge(
+              { :collectd_version => '5.0.0' }
+            )
+          end
 
-        it { should contain_concat__fragment('collectd loadplugin python').with(
-          :content => /^LoadPlugin.+python/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin perl').with(
+            :content => /^LoadPlugin.+perl/
+          ) }
 
-        it { should contain_concat__fragment('collectd loadplugin java').with(
-          :content => /^LoadPlugin.+java/
-        ) }
+          it { should contain_concat__fragment('collectd loadplugin python').with(
+            :content => /^LoadPlugin.+python/
+          ) }
+
+          it { should contain_concat__fragment('collectd loadplugin java').with(
+            :content => /^LoadPlugin.+java/
+          ) }
+        end
+
       end
-
     end
   end
 end

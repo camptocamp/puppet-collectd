@@ -1,16 +1,19 @@
 require 'spec_helper'
 
-os_facts = @os_facts
-
 describe 'custom_intervals' do
 
-  os_facts.each do |osfamily, facts|
-
-    describe "plugins loaded with intervals on #{osfamily}" do
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts.merge({
+          :collectd_version => '5',
+          :concat_basedir   => '/foo',
+        })
+      end
 
       describe "should work since 5.2" do
         let :facts do
-          facts.merge(
+          super().merge(
             { :collectd_version => '5.2.0' }
           )
         end
@@ -32,7 +35,7 @@ describe 'custom_intervals' do
 
       describe "should get ignored before 5.2" do
         let :facts do
-          facts.merge(
+          super().merge(
             { :collectd_version => '5.1.99' }
           )
         end
@@ -43,7 +46,6 @@ describe 'custom_intervals' do
 
         it { should_not contain_concat__fragment('collectd loadplugin memory') }
       end
-
     end
   end
 end

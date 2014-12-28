@@ -1,25 +1,25 @@
 require 'spec_helper'
 
-os_facts = @os_facts
-
 describe 'private_flag' do
 
-  os_facts.each do |osfamily, facts|
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts.merge({
+          :collectd_version => '5',
+          :concat_basedir   => '/foo',
+        })
+      end
 
-    let :facts do
-      facts.merge(
-        {}
-      )
-    end
-
-    describe "should set filemode to 0644 by default on #{osfamily}" do
-      it { should contain_file('/etc/collectd/plugins/disk_plugin_configuration.conf') \
+      describe "should set filemode to 0644 by default" do
+        it { should contain_file('/etc/collectd/plugins/disk_plugin_configuration.conf') \
           .with_mode('0644') }
-    end
+      end
 
-    describe "private flag should set filemode to 0600 on #{osfamily}" do
-      it { should contain_file('/etc/collectd/plugins/mysql_plugin_configuration.conf') \
+      describe "private flag should set filemode to 0600" do
+        it { should contain_file('/etc/collectd/plugins/mysql_plugin_configuration.conf') \
           .with_mode('0600') }
+      end
     end
   end
 end
