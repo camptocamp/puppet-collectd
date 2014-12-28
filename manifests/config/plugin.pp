@@ -54,7 +54,9 @@ define collectd::config::plugin ($plugin, $settings='', $private=false) {
 
   $filemode = $private ? {
     true    => '0600',
+    # lint:ignore:quoted_booleans
     'true'  => '0600',
+    # lint:endignore
     'yes'   => '0600',
     default => '0644',
   }

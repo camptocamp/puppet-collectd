@@ -9,19 +9,27 @@ collectd::config::plugin { 'test':
 }
 
 collectd::config::plugin { 'test_hash':
-  plugin => 'test_hash',
+  plugin   => 'test_hash',
   settings => {
     'Node "my-production"' => {
-      'Host' => 'riemann.my.tld',
-      'NumericPort' => 123,
-      'StringPort' => '123',
-      'TrueBool' => true,
-      'FalseBool' => false,
-      'Protocol' => 'UDP',
+      'Host'            => 'riemann.my.tld',
+      'NumericPort'     => 123,
+      'StringPort'      => '123',
+      'TrueBool'        => true,
+      'FalseBool'       => false,
+      'Protocol'        => 'UDP',
+      # lint:ignore:quoted_booleans
       'CheckThresholds' => 'true',
-      'Notifications' => 'false',
+      'Notifications'   => 'false',
+      # lint:endignore
     },
-    'Tag' => [ 'production', 'web' ],
-    'Nested' => [false, { 'mykey' => 1234, 'my2' => [1,2,3] }],
+    'Tag'                  => [ 'production', 'web' ],
+    'Nested'               => [
+      false,
+      {
+        'mykey' => 1234,
+        'my2'   => [1,2,3],
+      }
+    ],
   }
 }
