@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe 'global_param' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+  collectd::config::global { 'Hostname': value => 'foobar' }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

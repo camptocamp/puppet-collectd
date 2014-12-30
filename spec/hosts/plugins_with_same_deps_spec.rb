@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe 'plugins_with_same_deps' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+  collectd::plugin { ['apache', 'nginx'] : }"
+  end
+
   # this problem doesn't affect redhat
   on_supported_os.select{ |os, facts| facts[:osfamily] == 'Debian' }.each do |os, facts|
     context "on #{os}" do

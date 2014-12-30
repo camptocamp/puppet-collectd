@@ -2,6 +2,30 @@ require 'spec_helper'
 
 describe 'private_flag' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+
+  collectd::config::plugin { 'disk plugin configuration':
+    plugin   => 'disk',
+    settings => '# a comment
+Disk \"sdd\"
+IgnoreSelected false
+',
+  }
+
+  collectd::config::plugin { 'mysql plugin configuration':
+    plugin   => 'mysql',
+    private  => true,
+    settings => '
+<Database localhost>
+  Socket      \"/var/lib/mysql/mysql.sock\"
+  User        \"collectd\"
+  Password    \"password123\"
+</Database>
+',
+  }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

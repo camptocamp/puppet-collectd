@@ -2,6 +2,15 @@ require 'spec_helper'
 
 describe 'plugin_autoload_only_load_once' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+
+  collectd::config::plugin {
+    'foo': plugin => 'ping', settings => 'Host \"foo\"';
+    'bar': plugin => 'ping', settings => 'Host \"bar\"';
+  }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe 'globals_exception' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+  collectd::plugin { ['perl', 'python', 'java'] : }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

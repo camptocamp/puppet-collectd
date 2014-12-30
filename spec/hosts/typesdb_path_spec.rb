@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe 'typesdb_path' do
 
+  let(:pre_condition) do
+  "include 'collectd'"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

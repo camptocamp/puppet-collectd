@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe 'custom_intervals' do
 
+  let(:pre_condition) do
+  "class { 'collectd':
+    interval => {
+      'cpu'    => '5',
+      'memory' => '20',
+    }
+  }
+  collectd::plugin { 'cpu': }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe 'single_plugin' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+  collectd::plugin { 'vmem': }
+
+  collectd::config::plugin { 'configure vmem':
+    plugin   => 'vmem',
+    settings => 'Verbose false',
+  }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do

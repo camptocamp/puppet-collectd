@@ -2,6 +2,20 @@ require 'spec_helper'
 
 describe 'custom_type' do
 
+  let(:pre_condition) do
+  "include 'collectd'
+
+  collectd::config::type { 'my_custom_type':
+    value => 'tot:COUNTER:0:U   in:GAUGE:0:U   out:GAUGE:0:U',
+  }
+
+  collectd::config::type { 'some_obvious_mistake':
+    value => '
+I have no idea what I\\'m doing
+',
+  }"
+  end
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
