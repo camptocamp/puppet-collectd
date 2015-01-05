@@ -2,7 +2,7 @@
   "name": "puppet-collectd",
   "version": "0.1.0",
   "author": "camptocamp",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "source": "https://github.com/camptocamp/puppet-collectd.git",
   "project_page": "https://github.com/camptocamp/puppet-collectd",
   "issues_url": "https://github.com/camptocamp/puppet-collectd/issues",
