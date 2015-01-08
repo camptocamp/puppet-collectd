@@ -4,7 +4,6 @@ describe 'collectd::config' do
   let(:params) {
     {
       :confdir  => '/etc/collectd',
-      :rootdir  => '',
       :interval => {},
     }
   }
