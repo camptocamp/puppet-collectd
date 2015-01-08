@@ -31,7 +31,13 @@
 #    ',
 #    }
 #
-define collectd::config::plugin ($plugin, $settings='', $private=false) {
+define collectd::config::plugin (
+  $plugin,
+  # lint:ignore:empty_string_assignment
+  $settings = '',
+  # lint:endignore
+  $private  = false,
+) {
 
   validate_re($plugin, '^\w+$')
 

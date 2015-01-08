@@ -36,7 +36,14 @@
 #    ',
 #    }
 #
-define collectd::config::chain ($type='none', $settings='', $targets=[], $matches=[]) {
+define collectd::config::chain (
+  $type     = 'none',
+  # lint:ignore:empty_string_assignment
+  $settings = '',
+  # lint:endignore
+  $targets  = [],
+  $matches  = [],
+) {
 
   validate_re($type, '^(precache|postcache|none)$')
   $chain_type = $type ? {

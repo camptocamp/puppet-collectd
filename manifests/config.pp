@@ -21,12 +21,12 @@
 #
 class collectd::config (
   $confdir  = '/etc/collectd',
-  $rootdir  = '',
+  $rootdir  = undef,
   $interval = {},
 ) {
 
   validate_absolute_path($confdir)
-  if ($rootdir != '') { validate_absolute_path($rootdir) }
+  if $rootdir { validate_absolute_path($rootdir) }
 
   validate_hash($interval)
 
@@ -42,8 +42,14 @@ class collectd::config (
   $pluginsconfdir = "${confdir}/plugins"
   $filtersconfdir = "${confdir}/filters"
 
-  if ($rootdir == '') {
-
+  if $rootdir {
+    $typesdb = "${rootdir}/types.db"
+    # TODO: make collectd work when installed from source
+    #file { '/etc/init.d/collectd':
+    #  ensure => link,
+    #  target => TODO,
+    #}
+  } else {
     if ($::osfamily == 'RedHat' and
       versioncmp($::collectd_version, '4.6') < 0) {
         $_arch = $::architecture ? {
@@ -84,15 +90,8 @@ class collectd::config (
       }
     }
 
-  } else {
-
-    $typesdb = "${rootdir}/types.db"
-    # TODO: make collectd work when installed from source
-    #file { '/etc/init.d/collectd':
-    #  ensure => link,
-    #  target => TODO,
-    #}
   }
+
 
   validate_absolute_path($customtypesdb)
   Concat::Fragment <<| tag == 'collectd_typesdb' |>> {

@@ -24,7 +24,7 @@
 #
 class collectd (
   $confdir  = '/etc/collectd',
-  $rootdir  = '',
+  $rootdir  = undef,
   $interval = {},
   $version  = 'present',
   $manage_package = true

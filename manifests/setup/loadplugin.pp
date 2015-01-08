@@ -24,7 +24,9 @@ define collectd::setup::loadplugin($interval='default') {
   }
   else
   {
+    # lint:ignore:empty_string_assignment
     $_globals = ''
+    # lint:endignore
   }
 
   # starting in 5.2, collectd supports per-plugin interval
@@ -35,7 +37,9 @@ define collectd::setup::loadplugin($interval='default') {
   }
   else
   {
+    # lint:ignore:empty_string_assignment
     $_interval = ''
+    # lint:endignore
   }
 
   if (versioncmp($::collectd_version, '4.9') >= 0)
