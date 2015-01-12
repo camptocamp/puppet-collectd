@@ -9,7 +9,12 @@
   "summary": "Install and configure collectd on Debian and RedHat systems",
   "dependencies": [
     {
-      "name": "puppetlabs/stdlib"
+      "name": "puppetlabs/concat",
+      "version_requirement": ">=1.0.0 <2.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.2.0 <5.0.0"
     }
   ],
   "operatingsystem_support": [
