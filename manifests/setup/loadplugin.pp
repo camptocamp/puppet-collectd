@@ -13,7 +13,7 @@ define collectd::setup::loadplugin($interval='default') {
   validate_re($::osfamily, 'Debian|RedHat',
     "Support for \$osfamily '${::osfamily}' not yet implemented.")
 
-  include 'collectd::setup::settings'
+  include '::collectd::setup::settings'
 
   # perl and python plugins require special loading syntax in 4.9 and 4.10
   if ($name in ['perl', 'python'])

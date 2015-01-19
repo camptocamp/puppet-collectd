@@ -1,4 +1,4 @@
-include collectd
+include ::collectd
 collectd::config::plugin { 'test':
   plugin   => 'test',
   settings => '

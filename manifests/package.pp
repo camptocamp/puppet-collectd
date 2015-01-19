@@ -13,7 +13,7 @@ class collectd::package(
   $manage_package = true
 ) {
 
-  include 'collectd::setup::settings'
+  include '::collectd::setup::settings'
 
   validate_bool($manage_package)
 

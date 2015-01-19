@@ -30,15 +30,15 @@ class collectd (
   $manage_package = true
 ) {
 
-  class { 'collectd::package':
+  class { '::collectd::package':
     version        => $version,
     manage_package => $manage_package
   } ~>
-  class { 'collectd::config':
+  class { '::collectd::config':
     confdir  => $confdir,
     rootdir  => $rootdir,
     interval => $interval,
   } ~>
-  class { 'collectd::service': }
+  class { '::collectd::service': }
 
 }

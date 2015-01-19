@@ -7,7 +7,7 @@
 #
 class collectd::setup::defaultplugins {
 
-  include 'collectd::setup::settings'
+  include '::collectd::setup::settings'
 
   $defaultplugins = $collectd::setup::settings::defaultplugins
 
