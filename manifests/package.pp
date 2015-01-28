@@ -4,13 +4,17 @@
 # dependency package defined in `collectd::setup::settings`.
 #
 # Parameters:
-#  [*version*]: - Specify package version to install, by default installs
-#                 whatever version the package manager prefers.
-#
+#  [*version*]:        - Specify package version to install, by default
+#                        installs whatever version the package manager prefers.
+#  [*manage_package*]: - If package installation must be managed by this
+#                        module. Defaults to true.
+#  [*install_utils*]:  - If collectd-utils package must be installed or not.
+#                        Defaults to true.
 #
 class collectd::package(
   $version='present',
-  $manage_package = true
+  $manage_package = true,
+  $install_utils  = true
 ) {
 
   include '::collectd::setup::settings'
@@ -24,14 +28,17 @@ class collectd::package(
     }
 
     if ($::osfamily == 'Debian') {
-      package { ['collectd-core', 'collectd-utils', 'libcollectdclient1']:
-        ensure => $version,
-      }
+      package { 'collectd-core': ensure => $version }
     }
 
-    if ($::osfamily == 'RedHat') {
-      package { ['libcollectdclient']:
-        ensure => $version,
+    if $install_utils {
+      package { 'collectd-utils': ensure => $version }
+
+      if ($::osfamily == 'RedHat') {
+        package { 'libcollectdclient': ensure => $version }
+      }
+      if ($::osfamily == 'Debian') {
+        package { 'libcollectdclient1': ensure => $version }
       }
     }
 
