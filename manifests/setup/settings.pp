@@ -252,12 +252,14 @@ class collectd::setup::settings {
     'write_graphite',
     'write_http',
     'write_kafka',
+    'write_log',
     'write_mongodb',
     'write_redis',
     'write_riemann',
     'write_tsdb',
     'xmms',
     'zfs_arc',
+    'zookeeper',
   ]
 
 }
