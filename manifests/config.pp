@@ -170,7 +170,7 @@ class collectd::config (
 
   concat::fragment { 'globals_header':
     target  => $globalsconf,
-    order   => 01,
+    order   => '01',
     content => '# file managed by puppet
 # Global configuration settings come in here.
 # Use collectd::config::global to define global settings.
@@ -180,7 +180,7 @@ class collectd::config (
 
   concat::fragment { 'loadplugins_header':
     target  => $loadplugins,
-    order   => 01,
+    order   => '01',
     content => '# file managed by puppet
 # LoadPlugins statements all come in here.
 # Use collectd::plugin or collectd::config::plugin to load plugins.
