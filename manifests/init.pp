@@ -32,7 +32,7 @@ class collectd (
 
   class { '::collectd::package':
     version        => $version,
-    manage_package => $manage_package
+    manage_package => $manage_package,
   } ~>
   class { '::collectd::config':
     confdir  => $confdir,

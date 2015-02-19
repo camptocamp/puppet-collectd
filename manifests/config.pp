@@ -111,7 +111,7 @@ class collectd::config (
   }
 
   file { "${confdir}/collectd.conf.d/000-README.conf":
-    ensure  => present,
+    ensure  => file,
     content => '# Placeholder file managed by puppet
 #
 # Add your custom collectd configuration files in this directory.
@@ -128,7 +128,7 @@ class collectd::config (
   }
 
   file { "${pluginsconfdir}/000-README.conf":
-    ensure  => present,
+    ensure  => file,
     content => '# Placeholder file managed by puppet
 #
 # Plugin configuration settings come in this directory.
@@ -148,7 +148,7 @@ class collectd::config (
   }
 
   file { "${filtersconfdir}/000-README.conf":
-    ensure  => present,
+    ensure  => file,
     content => '# Placeholder file managed by puppet
 #
 # Filter chains configuration come in this directory.
@@ -162,7 +162,7 @@ class collectd::config (
 
 
   file { $conffile:
-    ensure  => present,
+    ensure  => file,
     content => template('collectd/collectd.conf.erb'),
   }
 

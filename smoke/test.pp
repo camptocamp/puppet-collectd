@@ -31,5 +31,5 @@ collectd::config::plugin { 'test_hash':
         'my2'   => [1,2,3],
       }
     ],
-  }
+  },
 }
