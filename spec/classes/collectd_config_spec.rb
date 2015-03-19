@@ -36,7 +36,7 @@ describe 'collectd::config' do
       ].each do |file|
 
         describe "should manage file #{file}" do
-          it { should contain_file(file).with_ensure('present') }
+          it { should contain_file(file) }
         end
       end
     end
