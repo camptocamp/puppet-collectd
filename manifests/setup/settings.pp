@@ -25,7 +25,10 @@ class collectd::setup::settings {
       },
       'curl_xml'        => ['libcurl3-gnutls', 'libxml2'],
       'dbi'             => ['libdbi1'],
-      'disk'            => ['libudev0'],
+      'disk'            => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian8/ => ['libudev1'],
+        default   => ['libudev0'],
+      },
       'dns'             => ['libpcap0.8'],
       'ipmi'            => ['libopenipmi0'],
       'libvirt'         => ['libvirt0', 'libxml2'],
