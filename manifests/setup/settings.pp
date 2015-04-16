@@ -49,8 +49,8 @@ class collectd::setup::settings {
         default   => ['libmysqlclient18'],
       },
       'network'         =>  "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian8/      => ['libgcrypt20'],
-        default        => ['libgcrypt11'],
+        /Debian8/       => ['libgcrypt20'],
+        default         => ['libgcrypt11'],
       },
       'netlink'         => ['libmnl0'],
       'nginx'           => ['libcurl3-gnutls'],
