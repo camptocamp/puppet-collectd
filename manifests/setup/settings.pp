@@ -48,7 +48,10 @@ class collectd::setup::settings {
         /Debian6/ => ['libmysqlclient16'],
         default   => ['libmysqlclient18'],
       },
-      'network'         => ['libgcrypt11'],
+      'network'         =>  "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian8/      => ['libgcrypt20'],
+        default        => ['libgcrypt11'],
+      },
       'netlink'         => ['libmnl0'],
       'nginx'           => ['libcurl3-gnutls'],
       'notify_desktop'  => ['libgdk-pixbuf2.0-0', 'libglib2.0-0', 'libnotify4'],
