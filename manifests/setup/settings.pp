@@ -85,7 +85,10 @@ class collectd::setup::settings {
       'write_http'      => ['libcurl3-gnutls'],
       'write_kafka'     => ['librdkafka1'],
       'write_redis'     => ['libhiredis0.10'],
-      'write_riemann'   => ['libprotobuf-c0'],
+      'write_riemann'   => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian8/ => ['libprotobuf-c1'],
+        default   => ['libprotobuf-c0'],
+      },
     },
 
     'RedHat' => {
