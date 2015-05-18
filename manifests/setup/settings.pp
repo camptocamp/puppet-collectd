@@ -62,7 +62,10 @@ class collectd::setup::settings {
         /Debian6/ => ['libperl5.10'],
         default   => ['libperl5.14'],
       },
-      'pinba'           => ['libprotobuf-c0'],
+      'pinba'           => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
+        /Debian8/ => ['libprotobuf-c1'],
+        default   => ['libprotobuf-c0'],
+      },
       'ping'            => ['liboping0'],
       'postgresql'      => ['libpq5'],
       'python'          => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
