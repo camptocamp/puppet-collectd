@@ -30,13 +30,20 @@ describe 'collectd::config' do
 
       [
         '/etc/collectd/collectd.conf',
+      ].each do |file|
+        describe "should manage file #{file}" do
+          it { should contain_file(file) }
+        end
+      end
+
+      [
         '/etc/collectd/custom-types.db',
         '/etc/collectd/globals.conf',
         '/etc/collectd/loadplugins.conf'
-      ].each do |file|
+      ].each do |concat|
 
-        describe "should manage file #{file}" do
-          it { should contain_file(file) }
+        describe "should manage concat #{concat}" do
+          it { should contain_concat(concat) }
         end
       end
     end
