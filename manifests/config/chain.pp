@@ -71,12 +71,12 @@ define collectd::config::chain (
     ensure  => $ensure,
     notify  => Service['collectd'],
     content => inline_template('# file managed by puppet
-# filter chain "<%= name %>"
-<% unless chain_type == "none" -%>
-<%= chain_type %> "<%= name %>"
+# filter chain "<%= @name %>"
+<% unless @chain_type == "none" -%>
+<%= @chain_type %> "<%= @name %>"
 <% end -%>
-<Chain "<%= name %>">
-<%= settings %>
+<Chain "<%= @name %>">
+<%= @settings %>
 </Chain>
 '),
   }
