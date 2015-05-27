@@ -11,84 +11,100 @@ class collectd::setup::settings {
   # These are packages which are required for the plugins to work correctly.
   # They are declared in collect::package and realize()d on demand.
   # Debian users should read /usr/share/doc/collectd-core/README.Debian.plugins
+
+  if $::osfamily == 'Debian' {
+    case $::lsbdistcodename {
+      'squeeze': {
+        $libmemcached   = 'libmemcached5'
+        $libmysqlclient = 'libmysqlclient16'
+        $libperl        = 'libperl5.10'
+        $libpython      = 'libpython2.6'
+        $libyajl        = 'libyajl1'
+      }
+      'precise': {
+        $libmemcached   = 'libmemcached6'
+        $libmysqlclient = 'libmysqlclient18'
+        $libperl        = 'libperl5.14'
+        $libpython      = 'libpython2.7'
+        $libyajl        = 'libyajl1'
+      }
+      default: {
+        $libmemcached   = 'libmemcached10'
+        $libmysqlclient = 'libmysqlclient18'
+        $libperl        = 'libperl5.14'
+        $libpython      = 'libpython2.7'
+        $libyajl        = 'libyajl2'
+      }
+    }
+
+    if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '8') >= 0 {
+      $libgcrypt   = 'libgcrypt20'
+      $libprotobuf = 'libprotobuf-c1'
+      $libudev     = 'libudev1'
+    } else {
+      $libgcrypt   = 'libgcrypt11'
+      $libprotobuf = 'libprotobuf-c0'
+      $libudev     = 'libudev0'
+    }
+  } else {
+    # prevent strict_variables to yield
+    # lint:ignore:empty_string_assignment
+    $libgcrypt      = ''
+    $libprotobuf    = ''
+    $libmemcached   = ''
+    $libmysqlclient = ''
+    $libperl        = ''
+    $libpython      = ''
+    $libudev        = ''
+    $libyajl        = ''
+    # lint:endignore
+  }
+
   $plugindeps = {
-    'Debian' => {
-      'amqp'            => ['librabbitmq0'],
-      'apache'          => ['libcurl3-gnutls'],
-      'ascent'          => ['libcurl3-gnutls', 'libxml2'],
-      'bind'            => ['libcurl3-gnutls', 'libxml2'],
-      'curl'            => ['libcurl3-gnutls'],
-      'curl_json'       => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libcurl3-gnutls', 'libyajl1'],
-        /Ubuntu12.04/ => ['libcurl3-gnutls', 'libyajl1'],
-        default   => ['libcurl3-gnutls', 'libyajl2'],
-      },
-      'curl_xml'        => ['libcurl3-gnutls', 'libxml2'],
-      'dbi'             => ['libdbi1'],
-      'disk'            => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian8/ => ['libudev1'],
-        default   => ['libudev0'],
-      },
-      'dns'             => ['libpcap0.8'],
-      'ipmi'            => ['libopenipmi0'],
-      'libvirt'         => ['libvirt0', 'libxml2'],
-      'log_logstash'    => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libyajl1'],
-        /Ubuntu12.04/ => ['libyajl1'],
-        default   => ['libyajl2'],
-      },
-      'lvm'             => ['liblvm2app2.2'],
-      'memcachec'       => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libmemcached5'],
-        /Ubuntu12.04/ => ['libmemcached6'],
-        default   => ['libmemcached10'],
-      },
-      'modbus'          => ['libmodbus5'],
-      'mysql'           => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libmysqlclient16'],
-        default   => ['libmysqlclient18'],
-      },
-      'network'         =>  "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian8/       => ['libgcrypt20'],
-        default         => ['libgcrypt11'],
-      },
-      'netlink'         => ['libmnl0'],
-      'nginx'           => ['libcurl3-gnutls'],
-      'notify_desktop'  => ['libgdk-pixbuf2.0-0', 'libglib2.0-0', 'libnotify4'],
-      'notify_email'    => ['libesmtp6', 'libssl1.0.0'],
-      'nut'             => ['libupsclient1'],
-      'openldap'        => ['libldap-2.4-2'],
-      'perl'            => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libperl5.10'],
-        default   => ['libperl5.14'],
-      },
-      'pinba'           => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian8/ => ['libprotobuf-c1'],
-        default   => ['libprotobuf-c0'],
-      },
-      'ping'            => ['liboping0'],
-      'postgresql'      => ['libpq5'],
-      'python'          => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian6/ => ['libpython2.6'],
-        default   => ['libpython2.7'],
-      },
-      'redis'           => ['libhiredis0.10'],
-      'rrdcached'       => ['librrd4'],
-      'rrdtool'         => ['librrd4'],
-      'sensors'         => ['lm-sensors', 'libsensors4'],
-      'smart'           => ['libatasmart4'],
-      'snmp'            => ['libsnmp15'],
-      'tokyotyrant'     => ['libtokyotyrant3'],
-      'uuid'            => ['libdbus-1-3', 'libhal1'],
-      'varnish'         => ['libvarnishapi1'],
-      'virt'            => ['libvirt0', 'libxml2'],
-      'write_http'      => ['libcurl3-gnutls'],
-      'write_kafka'     => ['librdkafka1'],
-      'write_redis'     => ['libhiredis0.10'],
-      'write_riemann'   => "${::operatingsystem}${::operatingsystemmajrelease}" ? {
-        /Debian8/ => ['libprotobuf-c1'],
-        default   => ['libprotobuf-c0'],
-      },
+    'Debian'           => {
+      'amqp'           => ['librabbitmq0'],
+      'apache'         => ['libcurl3-gnutls'],
+      'ascent'         => ['libcurl3-gnutls', 'libxml2'],
+      'bind'           => ['libcurl3-gnutls', 'libxml2'],
+      'curl'           => ['libcurl3-gnutls'],
+      'curl_json'      => ['libcurl3-gnutls', $libyajl],
+      'curl_xml'       => ['libcurl3-gnutls', 'libxml2'],
+      'dbi'            => ['libdbi1'],
+      'disk'           => [$libudev],
+      'dns'            => ['libpcap0.8'],
+      'ipmi'           => ['libopenipmi0'],
+      'libvirt'        => ['libvirt0', 'libxml2'],
+      'log_logstash'   => [$libyajl],
+      'lvm'            => ['liblvm2app2.2'],
+      'memcachec'      => [$libmemcached],
+      'modbus'         => ['libmodbus5'],
+      'mysql'          => [$libmysqlclient],
+      'network'        => [$libgcrypt],
+      'netlink'        => ['libmnl0'],
+      'nginx'          => ['libcurl3-gnutls'],
+      'notify_desktop' => ['libgdk-pixbuf2.0-0', 'libglib2.0-0', 'libnotify4'],
+      'notify_email'   => ['libesmtp6', 'libssl1.0.0'],
+      'nut'            => ['libupsclient1'],
+      'openldap'       => ['libldap-2.4-2'],
+      'perl'           => [$libperl],
+      'pinba'          => [$libprotobuf],
+      'ping'           => ['liboping0'],
+      'postgresql'     => ['libpq5'],
+      'python'         => [$libpython],
+      'redis'          => ['libhiredis0.10'],
+      'rrdcached'      => ['librrd4'],
+      'rrdtool'        => ['librrd4'],
+      'sensors'        => ['lm-sensors', 'libsensors4'],
+      'smart'          => ['libatasmart4'],
+      'snmp'           => ['libsnmp15'],
+      'tokyotyrant'    => ['libtokyotyrant3'],
+      'uuid'           => ['libdbus-1-3', 'libhal1'],
+      'varnish'        => ['libvarnishapi1'],
+      'virt'           => ['libvirt0', 'libxml2'],
+      'write_http'     => ['libcurl3-gnutls'],
+      'write_kafka'    => ['librdkafka1'],
+      'write_redis'    => ['libhiredis0.10'],
+      'write_riemann'  => [$libprotobuf],
     },
 
     'RedHat' => {
