@@ -73,7 +73,17 @@ define collectd::setup::loadplugin($interval='default') {
 
   if ($plugindeps[$name]) {
     $pkgs = $plugindeps[$name]
-    realize (Package[$pkgs])
+    $dep_ensure = $::collectd::version ? {
+      'absent' => 'absent',
+      default  => 'present',
+    }
+    ensure_packages(
+      $pkgs,
+      {
+        ensure => $dep_ensure,
+        before => Service['collectd'],
+      }
+    )
   }
 
 }
