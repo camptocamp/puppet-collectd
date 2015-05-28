@@ -58,22 +58,8 @@ class collectd::setup::settings {
       $libprotobuf = 'libprotobuf-c0'
       $libudev     = 'libudev0'
     }
-  } else {
-    # prevent strict_variables to yield
-    # lint:ignore:empty_string_assignment
-    $libgcrypt      = ''
-    $libprotobuf    = ''
-    $libmemcached   = ''
-    $libmysqlclient = ''
-    $libperl        = ''
-    $libpython      = ''
-    $libudev        = ''
-    $libyajl        = ''
-    # lint:endignore
-  }
 
-  $plugindeps = {
-    'Debian'           => {
+    $plugindeps = {
       'amqp'           => ['librabbitmq0'],
       'apache'         => ['libcurl3-gnutls'],
       'ascent'         => ['libcurl3-gnutls', 'libxml2'],
@@ -117,9 +103,9 @@ class collectd::setup::settings {
       'write_kafka'    => ['librdkafka1'],
       'write_redis'    => ['libhiredis0.10'],
       'write_riemann'  => [$libprotobuf],
-    },
-
-    'RedHat' => {
+    }
+  } else {
+    $plugindeps = {
       'amqp'            => ['collectd-amqp'],
       'apache'          => ['collectd-apache'],
       'ascent'          => ['collectd-ascent'],
@@ -164,7 +150,7 @@ class collectd::setup::settings {
       'write_http'      => ['collectd-write_http'],
       'write_redis'     => ['collectd-write_redis'],
       'write_riemann'   => ['collectd-write_riemann'],
-    },
+    }
   }
 
   # Plugin list generated from collectd's source tree with:

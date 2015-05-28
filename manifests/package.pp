@@ -49,7 +49,7 @@ class collectd::package(
 
     validate_hash($plugindeps)
 
-    $deplist = unique(flatten(values($plugindeps[$::osfamily])))
+    $deplist = unique(flatten(values($plugindeps)))
 
     validate_array($deplist)
 
