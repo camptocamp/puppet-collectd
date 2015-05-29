@@ -50,16 +50,7 @@ class collectd::config (
     #  target => TODO,
     #}
   } else {
-    if ($::osfamily == 'RedHat' and
-      versioncmp($::collectd_version, '4.6') < 0) {
-        $_arch = $::architecture ? {
-          'x86_64' => '64',
-          default  => '',
-        }
-      $typesdb = "/usr/lib${_arch}/collectd/types.db"
-    } else {
-      $typesdb = '/usr/share/collectd/types.db'
-    }
+    $typesdb = '/usr/share/collectd/types.db'
 
     $changes = $::osfamily ? {
       'Debian' => [
