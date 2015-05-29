@@ -71,8 +71,8 @@ define collectd::setup::loadplugin($interval='default') {
   $plugindeps = $collectd::setup::settings::plugindeps
   validate_hash($plugindeps)
 
-  if ($plugindeps[$::osfamily][$name]) {
-    $pkgs = $plugindeps[$::osfamily][$name]
+  if ($plugindeps[$name]) {
+    $pkgs = $plugindeps[$name]
     realize (Package[$pkgs])
   }
 
