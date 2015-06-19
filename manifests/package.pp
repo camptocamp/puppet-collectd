@@ -58,11 +58,5 @@ class collectd::package(
       default  => 'present',
     }
 
-    @package { $deplist:
-      ensure => $dep_ensure,
-      before => Service['collectd'],
-      tag    => 'virtualresource', # see puppet bug #18444
-    }
-
   }
 }
