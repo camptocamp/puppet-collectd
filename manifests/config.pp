@@ -33,7 +33,7 @@ class collectd::config (
   validate_re($::osfamily, 'Debian|RedHat',
     "Support for \$osfamily '${::osfamily}' not yet implemented.")
 
-  include '::collectd::setup::defaultplugins'
+  contain '::collectd::setup::defaultplugins'
 
   $conffile       = "${confdir}/collectd.conf"
   $customtypesdb  = "${confdir}/custom-types.db"
