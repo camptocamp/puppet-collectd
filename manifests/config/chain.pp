@@ -46,39 +46,52 @@ define collectd::config::chain (
 ) {
 
   validate_re($type, '^(precache|postcache|none)$')
-  $chain_type = $type ? {
-    'precache'  => 'PreCacheChain',
-    'postcache' => 'PostCacheChain',
-    'none'      => 'none',
-  }
 
   $builtin_targets = ['return', 'stop', 'write', 'jump']
   $builtin_matches = []
   realize_collectd_plugins($targets, 'target_', $builtin_targets)
   realize_collectd_plugins($matches, 'match_', $builtin_matches)
 
-  $filename = regsubst($name, '/|\s', '_', 'G')
-
   validate_absolute_path($collectd::config::filtersconfdir)
-  $full_pathname = "${collectd::config::filtersconfdir}/${filename}.conf"
 
   $ensure = $settings ? {
     ''      => absent,
     default => present,
   }
 
-  file { $full_pathname:
-    ensure  => $ensure,
-    notify  => Service['collectd'],
-    content => inline_template('# file managed by puppet
-# filter chain "<%= @name %>"
-<% unless @chain_type == "none" -%>
-<%= @chain_type %> "<%= @name %>"
-<% end -%>
+  if ($type == 'none') {
+    $filename = regsubst($name, '/|\s', '_', 'G')
+    $full_pathname = "${collectd::config::filtersconfdir}/${filename}.conf"
+
+    file { $full_pathname:
+      ensure  => $ensure,
+      notify  => Service['collectd'],
+      content => inline_template('# file managed by puppet
+# filter chain ruleset "Collectd::Config::Chain[<%= @name %>]"
 <Chain "<%= @name %>">
 <%= @settings %>
 </Chain>
 '),
-  }
+    }
+  } else {
+    $target = "${collectd::config::filtersconfdir}/${type}.conf"
 
+    include ::collectd::setup::filterchains
+
+    realize(
+      Concat[$target],
+      Concat::Fragment["${type}-chain-header"],
+      Concat::Fragment["${type}-chain-footer"],
+    )
+
+    concat::fragment { "${type}-${name}":
+      ensure  => $ensure,
+      target  => $target,
+      notify  => Service['collectd'],
+      content => inline_template('
+# filter chain ruleset "Collectd::Config::Chain[<%= @name %>]"
+<%= @settings %>
+'),
+    }
+  }
 }
