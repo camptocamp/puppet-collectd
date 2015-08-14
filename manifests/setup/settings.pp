@@ -39,10 +39,12 @@ class collectd::setup::settings {
 
     if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '8') >= 0 {
       $libgcrypt   = 'libgcrypt20'
+      $libmosquitto = 'libmosquitto1'
       $libprotobuf = 'libprotobuf-c1'
       $libudev     = 'libudev1'
     } elsif $::operatingsystem == 'Ubuntu' {
       $libgcrypt   = 'libgcrypt11'
+      $libmosquitto = 'libmosquitto0'
       if versioncmp($::lsbdistrelease, '12.04') <= 0 {
         $libprotobuf = 'libprotobuf-c0'
         $libudev     = 'libudev0'
@@ -55,6 +57,7 @@ class collectd::setup::settings {
       }
     } else {
       $libgcrypt   = 'libgcrypt11'
+      $libmosquitto = 'libmosquitto0'
       $libprotobuf = 'libprotobuf-c0'
       $libudev     = 'libudev0'
     }
@@ -64,6 +67,7 @@ class collectd::setup::settings {
       'apache'         => ['libcurl3-gnutls'],
       'ascent'         => ['libcurl3-gnutls', 'libxml2'],
       'bind'           => ['libcurl3-gnutls', 'libxml2'],
+      'ceph'           => [$libyajl],
       'curl'           => ['libcurl3-gnutls'],
       'curl_json'      => ['libcurl3-gnutls', $libyajl],
       'curl_xml'       => ['libcurl3-gnutls', 'libxml2'],
@@ -76,6 +80,7 @@ class collectd::setup::settings {
       'lvm'            => ['liblvm2app2.2'],
       'memcachec'      => [$libmemcached],
       'modbus'         => ['libmodbus5'],
+      'mqtt'           => [$libmosquitto],
       'mysql'          => [$libmysqlclient],
       'network'        => [$libgcrypt],
       'netlink'        => ['libmnl0'],
@@ -110,6 +115,7 @@ class collectd::setup::settings {
       'apache'          => ['collectd-apache'],
       'ascent'          => ['collectd-ascent'],
       'bind'            => ['collectd-bind'],
+      'ceph'            => ['collectd-ceph'],
       'curl'            => ['collectd-curl'],
       'curl_json'       => ['collectd-curl_json'],
       'curl_xml'        => ['collectd-curl_xml'],
@@ -127,6 +133,7 @@ class collectd::setup::settings {
       'lvm'             => ['collectd-lvm'],
       'memcachec'       => ['collectd-memcachec'],
       'modbus'          => ['collectd-modbus'],
+      'mqtt'            => ['collectd-mqtt'],
       'mysql'           => ['collectd-mysql'],
       'netlink'         => ['collectd-netlink'],
       'nginx'           => ['collectd-nginx'],
@@ -155,7 +162,7 @@ class collectd::setup::settings {
 
   # Plugin list generated from collectd's source tree with:
   # egrep '@<?LoadPlugin' src/collectd.conf.in | \
-  #   sed -r 's/.*@<?LoadPlugin\s+"?(\w+)"?>?/"\1",/' |sort
+  #   sed -r "s/.*@<?LoadPlugin\s+\"?(\w+)\"?>?/    '\1',/" | sort
   $defaultplugins = [
     'aggregation',
     'amqp',
@@ -167,6 +174,7 @@ class collectd::setup::settings {
     'barometer',
     'battery',
     'bind',
+    'ceph',
     'cgroups',
     'conntrack',
     'contextswitch',
@@ -185,11 +193,13 @@ class collectd::setup::settings {
     'entropy',
     'ethstat',
     'exec',
+    'fhcount',
     'filecount',
     'fscache',
     'gmond',
     'hddtemp',
     'interface',
+    'ipc',
     'ipmi',
     'iptables',
     'ipvs',
@@ -214,6 +224,7 @@ class collectd::setup::settings {
     'memory',
     'mic',
     'modbus',
+    'mqtt',
     'multimeter',
     'mysql',
     'netapp',
@@ -266,6 +277,7 @@ class collectd::setup::settings {
     'thermal',
     'threshold',
     'tokyotyrant',
+    'turbostat',
     'unixsock',
     'uptime',
     'users',
@@ -282,9 +294,11 @@ class collectd::setup::settings {
     'write_mongodb',
     'write_redis',
     'write_riemann',
+    'write_sensu',
     'write_tsdb',
     'xmms',
     'zfs_arc',
+    'zone',
     'zookeeper',
   ]
 
