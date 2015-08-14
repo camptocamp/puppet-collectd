@@ -6,8 +6,8 @@ describe 'filter_chains' do
   "include 'collectd'
   collectd::plugin { ['load', 'csv', 'rrdtool']: }
 
-  collectd::config::chain { 'my filter chain':
-    type     => 'postcache',
+  collectd::config::chain { 'my precache chain':
+    type     => 'precache',
     targets  => ['stop', 'write', 'replace'],
     matches  => ['regex'],
     settings => '
@@ -28,7 +28,36 @@ describe 'filter_chains' do
   Plugin \"rrdtool\"
 </Target>
 ',
-  }"
+  }
+
+  collectd::config::chain { 'a random chain':
+    targets  => ['write', 'return'],
+    matches  => ['regex'],
+    settings => '
+<Rule \"network traffic\">
+  <Match \"regex\">
+    Plugin \"^interface$\"
+    PluginInstance \"^eth0$\"
+  </Match>
+  <Target \"write\">
+    Plugin \"some_write_plugin/foobar\"
+  </Target>
+</Rule>
+
+Target \"return\"
+',
+  }
+
+  collectd::config::chain { 'postcache':
+    type     => 'postcache',
+    targets  => ['jump'],
+    settings => '
+<Target \"jump\">
+  Chain \"a random chain\"
+</Target>
+',
+  }
+"
   end
 
   on_supported_os.each do |os, facts|
@@ -57,15 +86,54 @@ describe 'filter_chains' do
         it { should_not contain_concat__fragment('collectd loadplugin match_write') }
       end
 
-      describe "should configure a filter chain" do
-        it { should contain_file('/etc/collectd/filters/my_filter_chain.conf') \
-          .with_content(/^PostCacheChain.+my filter chain.*/) }
+      describe "should configure a precache chain" do
+        it { should contain_concat__fragment('precache-chain-header').with(
+          :content => /^PreCacheChain.+precache.*/,
+          :target  => '/etc/collectd/filters/precache.conf'
+        ) }
 
-        it { should contain_file('/etc/collectd/filters/my_filter_chain.conf') \
-          .with_content(/^<Chain.+my filter chain.*>/) }
+        it { should contain_concat__fragment('precache-chain-header').with(
+          :content => /^<Chain.+precache.*>/,
+          :target  => '/etc/collectd/filters/precache.conf'
+        ) }
 
-        it { should contain_file('/etc/collectd/filters/my_filter_chain.conf') \
-          .with_content(/^<\/Chain>/) }
+        it { should contain_concat__fragment('precache-chain-footer').with(
+          :content => /^<\/Chain>/,
+          :target  => '/etc/collectd/filters/precache.conf'
+        ) }
+      end
+
+      describe "should configure a postcache chain" do
+        it { should contain_concat__fragment('postcache-chain-header').with(
+          :content => /^PostCacheChain.+postcache.*/,
+          :target  => '/etc/collectd/filters/postcache.conf'
+        ) }
+
+        it { should contain_concat__fragment('postcache-chain-header').with(
+          :content => /^<Chain.+postcache.*>/,
+          :target  => '/etc/collectd/filters/postcache.conf'
+        ) }
+
+        it { should contain_concat__fragment('postcache-chain-footer').with(
+          :content => /^<\/Chain>/,
+          :target  => '/etc/collectd/filters/postcache.conf'
+        ) }
+      end
+
+      describe "should configure a random chain" do
+
+        it { should contain_file('/etc/collectd/filters/a_random_chain.conf') \
+          .without_content(/^PostCacheChain.+/) }
+
+        it { should contain_file('/etc/collectd/filters/a_random_chain.conf') \
+          .without_content(/^PreCacheChain.+/) }
+
+        it { should contain_file('/etc/collectd/filters/a_random_chain.conf') \
+          .with_content(/^<Chain.+a random chain.*>/) }
+
+        it { should contain_file('/etc/collectd/filters/a_random_chain.conf') \
+          .with_content(/^<Chain.+>/) }
+
       end
     end
   end
