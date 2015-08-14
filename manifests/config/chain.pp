@@ -79,7 +79,7 @@ define collectd::config::chain (
     include ::collectd::setup::filterchains
 
     realize(
-      Concat["${target}"],
+      Concat[$target],
       Concat::Fragment["${type}-chain-header"],
       Concat::Fragment["${type}-chain-footer"],
     )

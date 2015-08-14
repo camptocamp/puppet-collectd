@@ -2,7 +2,7 @@ class collectd::setup::filterchains {
 
   @concat { [
     "${collectd::config::filtersconfdir}/precache.conf",
-     "${collectd::config::filtersconfdir}/postcache.conf",
+    "${collectd::config::filtersconfdir}/postcache.conf",
     ]: force => true,
   }
 
