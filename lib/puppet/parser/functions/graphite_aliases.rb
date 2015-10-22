@@ -1,5 +1,5 @@
 Puppet::Parser::Functions.newfunction(
-  :graphite_aliases, :type => :rvalue :doc => <<-EOS
+  :graphite_aliases, :type => :rvalue, :doc => <<-EOS
   Transforms values returned by query_facts() into a bunch of File resources
   which can be fed to create_resources(). The goal is to maintain a subtree of
   symlinks in graphite, offering a fact-based classification of nodes.
