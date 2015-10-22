@@ -29,9 +29,9 @@ EOS
 
   prefix = args.pop
 
-  args.pop.each do |host_dots, facts|
+  args.pop.each do |host_dots, f|
     host = host_dots.gsub(/\./, '_')
-    facts.each do |k,v|
+    f.each do |k,v|
       fact_dir = "aliases/by-#{k}/#{v}".gsub(/\./, '_')
       dirlist << fact_dir
       resources["#{prefix}/#{fact_dir}/#{host}"] = {
