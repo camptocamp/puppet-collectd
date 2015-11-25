@@ -13,8 +13,6 @@
 #
 define collectd::config::type ($value) {
 
-  validate_re($name, '^\w+$')
-
   @@concat::fragment { "collectd type ${name} imported from ${::hostname}":
     tag     => ['collectd_typesdb'],
     content => "${name} ${value}\n",
