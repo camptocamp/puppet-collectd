@@ -75,6 +75,7 @@ class collectd::setup::settings {
       'disk'           => [$libudev],
       'dns'            => ['libpcap0.8'],
       'ipmi'           => ['libopenipmi0'],
+      'java'           => ['default-jre-headless'],
       'libvirt'        => ['libvirt0', 'libxml2'],
       'log_logstash'   => [$libyajl],
       'lvm'            => ['liblvm2app2.2'],
