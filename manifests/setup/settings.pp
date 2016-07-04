@@ -52,10 +52,6 @@ class collectd::setup::settings {
         $libgcrypt   = 'libgcrypt11'
         $libprotobuf = 'libprotobuf-c0'
         $libudev     = 'libudev1'
-      } elsif versioncmp($::lsbdistrelease, '16.04') <= 0 {
-        $libgcrypt   = 'libgcrypt11'
-        $libprotobuf = 'libprotobuf-c1'
-        $libudev     = 'libudev1'
       } else {
         $libgcrypt   = 'libgcrypt20'
         $libprotobuf = 'libprotobuf-c1'
