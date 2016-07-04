@@ -43,15 +43,21 @@ class collectd::setup::settings {
       $libprotobuf = 'libprotobuf-c1'
       $libudev     = 'libudev1'
     } elsif $::operatingsystem == 'Ubuntu' {
-      $libgcrypt   = 'libgcrypt11'
       $libmosquitto = 'libmosquitto0'
       if versioncmp($::lsbdistrelease, '12.04') <= 0 {
+        $libgcrypt   = 'libgcrypt11'
         $libprotobuf = 'libprotobuf-c0'
         $libudev     = 'libudev0'
       } elsif versioncmp($::lsbdistrelease, '14.04') <= 0 {
+        $libgcrypt   = 'libgcrypt11'
         $libprotobuf = 'libprotobuf-c0'
         $libudev     = 'libudev1'
+      } elsif versioncmp($::lsbdistrelease, '16.04') <= 0 {
+        $libgcrypt   = 'libgcrypt11'
+        $libprotobuf = 'libprotobuf-c1'
+        $libudev     = 'libudev1'
       } else {
+        $libgcrypt   = 'libgcrypt20'
         $libprotobuf = 'libprotobuf-c1'
         $libudev     = 'libudev1'
       }
