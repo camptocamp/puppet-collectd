@@ -68,22 +68,24 @@ define collectd::setup::loadplugin($interval='default') {
     notify  => Service['collectd'],
   }
 
-  $plugindeps = $collectd::setup::settings::plugindeps
-  validate_hash($plugindeps)
+  if $::collectd::manage_package {
+    $plugindeps = $collectd::setup::settings::plugindeps
+    validate_hash($plugindeps)
 
-  if ($plugindeps[$name]) {
-    $pkgs = $plugindeps[$name]
-    $dep_ensure = $::collectd::version ? {
-      'absent' => 'absent',
-      default  => 'present',
-    }
-    ensure_packages(
-      $pkgs,
-      {
-        ensure => $dep_ensure,
-        before => Service['collectd'],
+    if ($plugindeps[$name]) {
+      $pkgs = $plugindeps[$name]
+      $dep_ensure = $::collectd::version ? {
+        'absent' => 'absent',
+        default  => 'present',
       }
-    )
+      ensure_packages(
+        $pkgs,
+        {
+          ensure => $dep_ensure,
+          before => Service['collectd'],
+        }
+      )
+    }
   }
 
 }
