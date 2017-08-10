@@ -58,10 +58,16 @@ class collectd::setup::settings {
         $libudev     = 'libudev1'
       }
     } else {
-      $libgcrypt   = 'libgcrypt11'
-      $libmosquitto = 'libmosquitto0'
-      $libprotobuf = 'libprotobuf-c0'
-      $libudev     = 'libudev0'
+      $libgcrypt     = 'libgcrypt11'
+      $libmosquitto  = 'libmosquitto0'
+      $libprotobuf   = 'libprotobuf-c0'
+      $libudev       = 'libudev0'
+    }
+
+    if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '9') == 0 {
+      $libmicrohttpd = 'libmicrohttpd12'
+    }else{
+      $libmicrohttpd = 'libmicrohttpd10'
     }
 
     $plugindeps = {
@@ -114,7 +120,7 @@ class collectd::setup::settings {
       'virt'             => ['libvirt0', 'libxml2'],
       'write_http'       => ['libcurl3-gnutls'],
       'write_kafka'      => ['librdkafka1'],
-      'write_prometheus' => [$libprotobuf, 'libmicrohttpd10'],
+      'write_prometheus' => [$libprotobuf, $libmicrohttpd],
       'write_redis'      => ['libhiredis0.10'],
       'write_riemann'    => [$libprotobuf],
       'xencpu'           => ['libxen-4.8'],
