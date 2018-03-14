@@ -157,8 +157,6 @@ class collectd::config (
     content => template('collectd/collectd.conf.erb'),
   }
 
-  concat { [$globalsconf, $loadplugins, $customtypesdb]: force => true }
-
   concat::fragment { 'globals_header':
     target  => $globalsconf,
     order   => '01',
