@@ -106,6 +106,7 @@ class collectd::setup::settings {
       'pinba'            => [$libprotobuf],
       'ping'             => ['liboping0'],
       'postgresql'       => ['libpq5'],
+      'processes'        => ['libmnl0'],
       'python'           => [$libpython],
       'redis'            => ['libhiredis0.10'],
       'rrdcached'        => ['librrd4'],
