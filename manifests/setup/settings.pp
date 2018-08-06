@@ -64,7 +64,7 @@ class collectd::setup::settings {
       $libudev       = 'libudev0'
     }
 
-    if $::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '9') == 0 {
+    if ($::operatingsystem == 'Debian' or $::operatingsystem == 'Ubuntu' ) and ( $::operatingsystemmajrelease == '18.04' or versioncmp($::operatingsystemmajrelease, '9') == 0) {
       $libmicrohttpd = 'libmicrohttpd12'
     }else{
       $libmicrohttpd = 'libmicrohttpd10'
