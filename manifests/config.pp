@@ -41,6 +41,7 @@ class collectd::config (
   $loadplugins    = "${confdir}/loadplugins.conf"
   $pluginsconfdir = "${confdir}/plugins"
   $filtersconfdir = "${confdir}/filters"
+  $servicedir     = '/etc/systemd/system/collectd.service.d'
 
   if $rootdir {
     $typesdb = "${rootdir}/types.db"
@@ -157,8 +158,15 @@ class collectd::config (
     content => template('collectd/collectd.conf.erb'),
   }
 
-  concat { [$globalsconf, $loadplugins, $customtypesdb]: }
+  concat { [$globalsconf, $loadplugins, $customtypesdb, "${servicedir}/override.conf" ]: }
 
+  concat::fragment { "collectd setcapacity for ${name}":
+    target  => "${collectd::config::servicedir}/override.conf",
+    content => '[Service]
+CapabilityBoundingSet=',
+    notify  => Service['collectd'],
+    order   => '01',
+  }
   concat::fragment { 'globals_header':
     target  => $globalsconf,
     order   => '01',
@@ -178,4 +186,5 @@ class collectd::config (
 
 ',
   }
+
 }
