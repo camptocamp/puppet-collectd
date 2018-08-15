@@ -85,7 +85,6 @@ define collectd::config::chain (
     )
 
     concat::fragment { "${type}-${name}":
-      ensure  => $ensure,
       target  => $target,
       notify  => Service['collectd'],
       content => inline_template('
