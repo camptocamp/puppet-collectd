@@ -85,5 +85,4 @@ define collectd::setup::loadplugin($interval='default') {
       }
     )
   }
-
 }

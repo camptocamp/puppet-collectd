@@ -19,4 +19,5 @@ define collectd::setup::registerplugin () {
   }
 
   @collectd::setup::loadplugin { $name: interval => $value }
+  collectd::setup::setcapa{ $name : }
 }
