@@ -19,5 +19,7 @@ define collectd::setup::registerplugin () {
   }
 
   @collectd::setup::loadplugin { $name: interval => $value }
-  collectd::setup::setcapa{ $name : }
+  if "${::operatingsystem}${osrelease}" != /^(RedHat5|RedHat6)$/ {
+	  collectd::setup::setcapa{ $name : }
+  }
 }
