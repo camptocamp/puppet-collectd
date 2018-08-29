@@ -18,6 +18,11 @@ define collectd::setup::registerplugin () {
     $value = 'default'
   }
 
+  $osrelease = $::osfamily ? {
+    'Debian' => $::lsbmajdistrelease,
+    'RedHat' => $::operatingsystemmajrelease,
+  }
+
   @collectd::setup::loadplugin { $name: interval => $value }
   if "${::operatingsystem}${osrelease}" != /^(RedHat5|RedHat6)$/ {
 	  collectd::setup::setcapa{ $name : }
