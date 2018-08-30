@@ -14,16 +14,14 @@ define collectd::setup::setcapa{
   }
   if ( $capabilityboundset[$name] ) {
 
-    ensure_resource( 'file', $collectd::config::servicedir,
+    ensure_resource( 'file', $collectd::override::base::servicedir,
       {
         ensure  => 'directory',
       }
     )
-    concat::fragment { "collectd setcapacity for ${name}":
-      target  => "${collectd::config::servicedir}/override.conf",
+
+    collectd::override { "collectd setcapacity for ${name}":
       content => $capabilityboundset[$name],
-      notify  => Service['collectd'],
-      order   => '10',
     }
   }
 }
