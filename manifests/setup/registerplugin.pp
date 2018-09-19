@@ -25,6 +25,6 @@ define collectd::setup::registerplugin () {
 
   @collectd::setup::loadplugin { $name: interval => $value }
   if $::osfamily == 'RedHat' and versioncmp($osrelease, '7') >= 0 {
-	  collectd::setup::setcapa{ $name : }
+    collectd::setup::setcapa{ $name : }
   }
 }
