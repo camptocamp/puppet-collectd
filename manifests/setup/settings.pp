@@ -16,6 +16,7 @@ class collectd::setup::settings {
     case $::lsbdistcodename {
       'squeeze': {
         $libmemcached   = 'libmemcached5'
+        $libmnl         = 'libcollectdclient1' # Fake dependency for squeeze
         $libmysqlclient = 'libmysqlclient16'
         $libperl        = 'libperl5.10'
         $libpython      = 'libpython2.6'
@@ -23,6 +24,7 @@ class collectd::setup::settings {
       }
       'precise': {
         $libmemcached   = 'libmemcached6'
+        $libmnl         = 'libmnl0'
         $libmysqlclient = 'libmysqlclient18'
         $libperl        = 'libperl5.14'
         $libpython      = 'libpython2.7'
@@ -30,6 +32,7 @@ class collectd::setup::settings {
       }
       default: {
         $libmemcached   = 'libmemcached10'
+        $libmnl         = 'libmnl0'
         $libmysqlclient = 'libmysqlclient18'
         $libperl        = 'libperl5.14'
         $libpython      = 'libpython2.7'
@@ -95,7 +98,7 @@ class collectd::setup::settings {
       'mqtt'             => [$libmosquitto],
       'mysql'            => [$libmysqlclient],
       'network'          => [$libgcrypt],
-      'netlink'          => ['libmnl0'],
+      'netlink'          => [$libmnl],
       'nginx'            => ['libcurl3-gnutls'],
       'notify_desktop'   => ['libgdk-pixbuf2.0-0', 'libglib2.0-0', 'libnotify4'],
       'notify_email'     => ['libesmtp6', 'libssl1.0.0'],
@@ -106,7 +109,7 @@ class collectd::setup::settings {
       'pinba'            => [$libprotobuf],
       'ping'             => ['liboping0'],
       'postgresql'       => ['libpq5'],
-      'processes'        => ['libmnl0'],
+      'processes'        => [$libmnl],
       'python'           => [$libpython],
       'redis'            => ['libhiredis0.10'],
       'rrdcached'        => ['librrd4'],
