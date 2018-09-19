@@ -38,9 +38,11 @@ class collectd::package(
         package { 'libcollectdclient': ensure => $version }
       }
       if ($::osfamily == 'Debian') {
-        package { 'libmnl0':
-          ensure => 'present',
-          before => Package['collectd','collectd-core'],
+        if versioncmp($::operatingsystemmajrelease, '6') > 0 {
+          package { 'libmnl0':
+            ensure => 'present',
+            before => Package['collectd','collectd-core'],
+          }
         }
         package { 'libcollectdclient1': ensure => $version }
       }
