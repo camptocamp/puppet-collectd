@@ -1,5 +1,5 @@
 {
-  "name": "puppet-collectd",
+  "name": "camptocamp-collectd",
   "version": "0.2.3",
   "author": "camptocamp",
   "license": "Apache-2.0",
