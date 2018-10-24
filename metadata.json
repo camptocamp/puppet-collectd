@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-collectd",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "camptocamp",
   "license": "Apache-2.0",
   "source": "https://github.com/camptocamp/puppet-collectd.git",
@@ -40,7 +40,8 @@
       "operatingsystemrelease": [
         "12.04",
         "14.04",
-        "16.04"
+        "16.04",
+        "18.04"
       ]
     }
   ]
