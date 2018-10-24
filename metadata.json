@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-collectd",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "camptocamp",
   "license": "Apache-2.0",
   "source": "https://github.com/camptocamp/puppet-collectd.git",
@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=1.0.0 <2.0.0"
+      "version_requirement": ">=2.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -23,7 +23,8 @@
       "operatingsystemrelease": [
         "6",
         "7",
-        "8"
+        "8",
+        "9"
       ]
     },
     {
