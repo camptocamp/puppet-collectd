@@ -87,7 +87,7 @@ define collectd::setup::loadplugin($interval='default') {
       $pkgs,
       {
         ensure => $dep_ensure,
-        before => Service['collectd'],
+        before => Class['collectd::package::core'],
       }
     )
   }
