@@ -4,5 +4,6 @@ fixtures:
       repo: 'puppetlabs-concat'
       ref: '2.2.1'
     stdlib: 'puppetlabs-stdlib'
+    augeas_core: 'puppetlabs-augeas_core'
   symlinks:
     collectd: "#{source_dir}"
