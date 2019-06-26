@@ -73,15 +73,9 @@ define collectd::setup::loadplugin($interval='default') {
 
   if ($plugindeps[$name]) {
     $pkgs = $plugindeps[$name]
-    # As apt is more strict on versioning , we have to force the version on
-    # Red Hat
-    $pluginversion =  $::osfamily ? {
-      'RedHat' => $::collectd::version,
-      default  => 'present',
-    }
     $dep_ensure = $::collectd::version ? {
       'absent' => 'absent',
-      default  => $pluginversion,
+      default  => $::collectd::package::pkg_version,
     }
     ensure_packages(
       $pkgs,
