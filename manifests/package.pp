@@ -21,16 +21,16 @@ class collectd::package(
 
   validate_bool($manage_package)
 
+  include 'collectd::package::core'
+
+  # As apt is more strict on versioning , we have to force the version on
+  # Red Hat
+  $pkg_version =  $::osfamily ? {
+    'RedHat' => $version,
+    default  => 'present',
+  }
+
   if $manage_package {
-
-    package { 'collectd':
-      ensure => $version,
-    }
-
-    if ($::osfamily == 'Debian') {
-      package { 'collectd-core': ensure => $version }
-    }
-
     if $install_utils {
       package { 'collectd-utils': ensure => $version }
 
@@ -40,8 +40,8 @@ class collectd::package(
       if ($::osfamily == 'Debian') {
         if versioncmp($::operatingsystemmajrelease, '6') > 0 {
           package { 'libmnl0':
-            ensure => 'present',
-            before => Package['collectd','collectd-core'],
+            ensure => $pkg_version,
+            before => Class['collectd::package::core'],
           }
         }
         package { 'libcollectdclient1': ensure => $version }
