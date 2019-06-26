@@ -8,6 +8,11 @@ describe 'collectd::config' do
     }
   }
 
+  let(:pre_condition) {
+    # Required for collectd::override
+    'include ::collectd::service'
+  }
+
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) do
