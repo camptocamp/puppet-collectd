@@ -1,6 +1,13 @@
 Puppet Module for Collectd
 ==========================
 
+[![Puppet Forge Version](http://img.shields.io/puppetforge/v/camptocamp/collectd.svg)](https://forge.puppetlabs.com/camptocamp/collectd)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/collectd.svg)](https://forge.puppetlabs.com/camptocamp/collectd)
+[![Build Status](https://img.shields.io/travis/camptocamp/puppet-collectd/master.svg)](https://travis-ci.org/camptocamp/puppet-collectd)
+[![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/camptocamp/collectd.svg)](https://forge.puppetlabs.com/camptocamp/collectd)
+[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
+
+
 Example Usage
 -------------
 
