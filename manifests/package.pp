@@ -12,15 +12,12 @@
 #                        Defaults to true.
 #
 class collectd::package(
-  $version='present',
-  $manage_package = true,
-  $install_utils  = true
+  String  $version='present',
+  Boolean $manage_package = true,
+  Boolean $install_utils  = true
 ) {
 
   include '::collectd::setup::settings'
-
-  validate_bool($manage_package)
-
   include 'collectd::package::core'
 
   # As apt is more strict on versioning , we have to force the version on
@@ -48,16 +45,15 @@ class collectd::package(
       }
     }
 
-    validate_re($::osfamily, 'Debian|RedHat',
-      "Support for \$osfamily '${::osfamily}' not yet implemented.")
+    assert_type(Enum['Debian', 'RedHat'], $::osfamily) |$expected, $actual| {
+      fail "Support for \$osfamily '${::osfamily}' not yet implemented."
+    }
 
     $plugindeps = $collectd::setup::settings::plugindeps
-
-    validate_hash($plugindeps)
+    assert_type(Hash, $plugindeps)
 
     $deplist = unique(flatten(values($plugindeps)))
-
-    validate_array($deplist)
+    assert_type(Array[String], $deplist)
 
     $dep_ensure = $version ? {
       'absent' => 'absent',

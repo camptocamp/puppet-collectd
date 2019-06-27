@@ -8,12 +8,12 @@
 #
 #    collectd::config::global { 'FQDNLookup': value => false }
 #
-define collectd::config::global ($value) {
+define collectd::config::global (String $value) {
 
-  validate_re($name, '^\w+$')
+  assert_type(Pattern[/^\w+$/], $name)
 
   $target = $collectd::config::globalsconf
-  validate_absolute_path($target)
+  assert_type(Stdlib::Absolutepath, $target)
 
   concat::fragment { "collectd global ${name}":
     target  => $target,
