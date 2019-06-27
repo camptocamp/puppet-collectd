@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-collectd",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "author": "camptocamp",
   "license": "Apache-2.0",
   "source": "https://github.com/camptocamp/puppet-collectd.git",
