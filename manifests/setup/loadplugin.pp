@@ -6,12 +6,15 @@
 # Scaffolding code, it shouldn't be needed to directly call it when using
 # this module.
 #
-define collectd::setup::loadplugin($interval='default') {
+define collectd::setup::loadplugin(
+  String $interval='default',
+) {
 
-  validate_re($name, '^\w+$')
+  assert_type(Pattern[/^\w+$/], $name)
 
-  validate_re($::osfamily, 'Debian|RedHat',
-    "Support for \$osfamily '${::osfamily}' not yet implemented.")
+  assert_type(Enum['Debian', 'RedHat'], $::osfamily) |$expected, $actual| {
+    fail "Support for \$osfamily '${::osfamily}' not yet implemented."
+  }
 
   include '::collectd::setup::settings'
 
@@ -32,7 +35,7 @@ define collectd::setup::loadplugin($interval='default') {
   # starting in 5.2, collectd supports per-plugin interval
   if (versioncmp($::collectd_version, '5.2') >= 0) and ($interval != 'default')
   {
-    validate_re($interval, '^\d+$')
+    assert_type(Pattern[/^\d+$/], $interval)
     $_interval = "  Interval ${interval}\n"
   }
   else
@@ -53,7 +56,7 @@ define collectd::setup::loadplugin($interval='default') {
   }
 
   $target = $collectd::config::loadplugins
-  validate_absolute_path($target)
+  assert_type(Stdlib::Absolutepath, $target)
 
   $order = $name ? {
     /^(syslog|logfile)$/   => 10, # load logging plugins first
@@ -69,7 +72,7 @@ define collectd::setup::loadplugin($interval='default') {
   }
 
   $plugindeps = $collectd::setup::settings::plugindeps
-  validate_hash($plugindeps)
+  assert_type(Hash, $plugindeps)
 
   if ($plugindeps[$name]) {
     $pkgs = $plugindeps[$name]

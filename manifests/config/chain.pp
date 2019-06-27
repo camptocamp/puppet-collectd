@@ -37,22 +37,20 @@
 #    }
 #
 define collectd::config::chain (
-  $type     = 'none',
+  Enum['precache', 'postcache', 'none'] $type     = 'none',
   # lint:ignore:empty_string_assignment
-  $settings = '',
+  String                                $settings = '',
   # lint:endignore
-  $targets  = [],
-  $matches  = [],
+  Array[String]                         $targets  = [],
+  Array[String]                         $matches  = [],
 ) {
-
-  validate_re($type, '^(precache|postcache|none)$')
 
   $builtin_targets = ['return', 'stop', 'write', 'jump']
   $builtin_matches = []
   realize_collectd_plugins($targets, 'target_', $builtin_targets)
   realize_collectd_plugins($matches, 'match_', $builtin_matches)
 
-  validate_absolute_path($collectd::config::filtersconfdir)
+  assert_type(Stdlib::Absolutepath, $collectd::config::filtersconfdir)
 
   $ensure = $settings ? {
     ''      => absent,

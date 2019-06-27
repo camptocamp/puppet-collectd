@@ -32,14 +32,12 @@
 #    }
 #
 define collectd::config::plugin (
-  $plugin,
+  Pattern[/^\w+$/] $plugin,
   # lint:ignore:empty_string_assignment
   $settings = '',
   # lint:endignore
-  $private  = false,
+  Boolean          $private  = false,
 ) {
-
-  validate_re($plugin, '^\w+$')
 
   if is_string($settings) {
     $settings_r = $settings
@@ -50,7 +48,7 @@ define collectd::config::plugin (
   Collectd::Setup::Loadplugin <| title == $plugin |>
 
   $filename = regsubst($name, '/|\s', '_', 'G')
-  validate_absolute_path($collectd::config::pluginsconfdir)
+  assert_type(Stdlib::Absolutepath, $collectd::config::pluginsconfdir)
   $full_pathname = "${collectd::config::pluginsconfdir}/${filename}.conf"
 
   $ensure = $settings_r ? {

@@ -20,18 +20,14 @@
 # `/etc/collectd/collectd.conf` to get an idea of the configuration structure.
 #
 class collectd::config (
-  $confdir  = '/etc/collectd',
-  $rootdir  = undef,
-  $interval = {},
+  Stdlib::Absolutepath           $confdir  = '/etc/collectd',
+  Optional[Stdlib::Absolutepath] $rootdir  = undef,
+  Hash                           $interval = {},
 ) {
 
-  validate_absolute_path($confdir)
-  if $rootdir { validate_absolute_path($rootdir) }
-
-  validate_hash($interval)
-
-  validate_re($::osfamily, 'Debian|RedHat',
-    "Support for \$osfamily '${::osfamily}' not yet implemented.")
+  assert_type(Enum['Debian', 'RedHat'], $::osfamily) |$expected, $actual| {
+    fail "Support for \$osfamily '${::osfamily}' not yet implemented."
+  }
 
   contain '::collectd::setup::defaultplugins'
 
@@ -84,7 +80,7 @@ class collectd::config (
   }
 
 
-  validate_absolute_path($customtypesdb)
+  assert_type(Stdlib::Absolutepath, $customtypesdb)
   Concat::Fragment <<| tag == 'collectd_typesdb' |>> {
     target => $customtypesdb,
   }

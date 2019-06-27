@@ -7,10 +7,10 @@
 #
 define collectd::setup::registerplugin () {
 
-  validate_re($name, '^\w+$')
+  assert_type(Pattern[/^\w+$/], $name)
 
   $interval = $collectd::config::interval
-  validate_hash($interval)
+  assert_type(Hash, $interval)
 
   if ($interval[$name]) {
     $value = $interval[$name]
