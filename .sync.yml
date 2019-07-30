@@ -2,4 +2,38 @@
 .travis.yml:
   acceptance:
     - '*'
+  allow_failures:
+    - rvm: default
+      sudo: required
+      services: docker
+      env:
+        - PUPPET_INSTALL_TYPE=agent
+        - BEAKER_IS_PE=no
+        - BEAKER_PUPPET_COLLECTION=puppet5
+        - BEAKER_debug=true
+        - BEAKER_setfile=centos5-64{hypervisor=docker}
+      bundler_args:
+      script: bundle exec rspec spec/acceptance/*_spec.rb
+    - rvm: default
+      sudo: required
+      services: docker
+      env:
+        - PUPPET_INSTALL_TYPE=agent
+        - BEAKER_IS_PE=no
+        - BEAKER_PUPPET_COLLECTION=puppet5
+        - BEAKER_debug=true
+        - BEAKER_setfile=debian6-64{hypervisor=docker}
+      bundler_args:
+      script: bundle exec rspec spec/acceptance/*_spec.rb
+    - rvm: default
+      sudo: required
+      services: docker
+      env:
+        - PUPPET_INSTALL_TYPE=agent
+        - BEAKER_IS_PE=no
+        - BEAKER_PUPPET_COLLECTION=puppet5
+        - BEAKER_debug=true
+        - BEAKER_setfile=debian7-64{hypervisor=docker}
+      bundler_args:
+      script: bundle exec rspec spec/acceptance/*_spec.rb
   forge_password: "ay5H/Tj63r6bfomb7F2AZ8mQdVcr4YNMak9kt5ZAenOFMXvruFtDJsnQLL3v910bhXlNkbnA1gZ4zkzx9dvBk6Em8zwLfWiyNumy61u2UgzEYRYu5tEVWJ5o5YrpvCBcObtl/OIyy8xdq4r7d/zBN8Slax3gTjPywSWkP7TYrIs="
