@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.1](https://github.com/camptocamp/puppet-collectd/tree/1.0.1) (2019-07-30)
+[Full Changelog](https://github.com/camptocamp/puppet-collectd/compare/1.0.0...1.0.1)
+
+**Merged pull requests:**
+
+- Add basic acceptance test [\#44](https://github.com/camptocamp/puppet-collectd/pull/44) ([raphink](https://github.com/raphink))
+- Fix package versions to avoid conflicts with plugin deps [\#43](https://github.com/camptocamp/puppet-collectd/pull/43) ([raphink](https://github.com/raphink))
+
 ## [1.0.0](https://github.com/camptocamp/puppet-collectd/tree/1.0.0) (2019-06-27)
 [Full Changelog](https://github.com/camptocamp/puppet-collectd/compare/0.2.6...1.0.0)
 
