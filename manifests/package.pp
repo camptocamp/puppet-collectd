@@ -22,26 +22,34 @@ class collectd::package(
 
   # As apt is more strict on versioning , we have to force the version on
   # Red Hat
-  $pkg_version =  $::osfamily ? {
+  $pkg_version = $::osfamily ? {
     'RedHat' => $version,
     default  => 'present',
   }
 
+  case $::osfamily {
+    'RedHat': {
+      $pkgs = ['collectd-utils', 'libcollectdclient']
+    }
+
+    'Debian': {
+      if versioncmp($::operatingsystemmajrelease, '6') > 0 {
+        $pkgs = ['collectd-utils', 'libcollectdclient1', 'libmnl0']
+      } else {
+        $pkgs = ['collectd-utils', 'libcollectdclient1']
+      }
+    }
+
+    default: {
+      $pkgs = ['collectd-utils']
+    }
+  }
+
   if $manage_package {
     if $install_utils {
-      package { 'collectd-utils': ensure => $version }
-
-      if ($::osfamily == 'RedHat') {
-        package { 'libcollectdclient': ensure => $version }
-      }
-      if ($::osfamily == 'Debian') {
-        if versioncmp($::operatingsystemmajrelease, '6') > 0 {
-          package { 'libmnl0':
-            ensure => $pkg_version,
-            before => Class['collectd::package::core'],
-          }
-        }
-        package { 'libcollectdclient1': ensure => $version }
+      package { $pkgs:
+        ensure => $pkg_version,
+        before => Class['collectd::package::core'],
       }
     }
 
