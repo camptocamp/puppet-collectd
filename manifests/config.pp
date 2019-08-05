@@ -91,6 +91,7 @@ class collectd::config (
     force        => true,
     recurse      => true,
     recurselimit => 1,
+    require      => Class['::collectd::package::core'],
   }
 
   file { "${confdir}/collectd.conf.d":
