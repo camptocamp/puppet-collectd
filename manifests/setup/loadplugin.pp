@@ -17,6 +17,13 @@ define collectd::setup::loadplugin(
   }
 
   include '::collectd::setup::settings'
+  $osrelease = $::osfamily ? {
+    'Debian' => $::lsbmajdistrelease,
+    'RedHat' => $::operatingsystemmajrelease,
+  }
+  if $::osfamily == 'RedHat' and versioncmp($osrelease, '7') >= 0 {
+    collectd::setup::setcapa{ $name : }
+  }
 
   # perl and python plugins require special loading syntax in 4.9 and 4.10
   if ($name in ['perl', 'python'])
