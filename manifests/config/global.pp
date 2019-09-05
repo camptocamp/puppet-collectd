@@ -8,7 +8,7 @@
 #
 #    collectd::config::global { 'FQDNLookup': value => false }
 #
-define collectd::config::global (String $value) {
+define collectd::config::global (Variant[String,Boolean,Numeric] $value) {
 
   assert_type(Pattern[/^\w+$/], $name)
 
