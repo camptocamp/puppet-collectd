@@ -73,6 +73,12 @@ class collectd::setup::settings {
       $libmicrohttpd = 'libmicrohttpd10'
     }
 
+    if ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '9') >= 0) or ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemmajrelease, '19.04') >= 0) {
+      $libvarnishapi = 'libvarnishapi2'
+    }else{
+      $libvarnishapi = 'libvarnishapi1'
+    }
+
     $plugindeps = {
       'amqp'             => ['librabbitmq0'],
       'apache'           => ['libcurl3-gnutls'],
@@ -120,7 +126,7 @@ class collectd::setup::settings {
       'snmp'             => ['libsnmp15'],
       'tokyotyrant'      => ['libtokyotyrant3'],
       'uuid'             => ['libdbus-1-3', 'libhal1'],
-      'varnish'          => ['libvarnishapi1'],
+      'varnish'          => [$libvarnishapi],
       'virt'             => ['libvirt0', 'libxml2'],
       'write_http'       => ['libcurl3-gnutls'],
       'write_kafka'      => ['librdkafka1'],
