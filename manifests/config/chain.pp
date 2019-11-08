@@ -64,10 +64,16 @@ define collectd::config::chain (
   Array[String]                         $matches  = [],
 ) {
 
-  if is_string($settings) {
-    $settings_r = $settings
-  } else {
-    $settings_r = collectd_dsl($settings)
+  case $settings {
+    String: {
+      $settings_r = $settings
+    }
+    Hash,Array: {
+      $settings_r = collectd_dsl($settings)
+    }
+    default: {
+      fail 'Unsupported datatype for $collectd::config::chain::settings'
+    }
   }
   $builtin_targets = ['return', 'stop', 'write', 'jump']
   $builtin_matches = []
