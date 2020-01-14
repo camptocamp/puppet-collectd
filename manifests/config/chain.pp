@@ -36,15 +36,45 @@
 #    ',
 #    }
 #
+# If $settings is given as a Hash, the ruby gem collectd-dsl
+# will be used to generate the corresponding String:
+#
+#    collectd::config::chain { 'my filter chain':
+#      type     => 'postcache',
+#      targets  => ['stop', 'write'],
+#      matches  => ['regex'],
+#      settings => {
+#        'rule "add_metadata"' => {
+#          'target "set"' => {
+#            'metadata' => [
+#              'facter.operatingsystem\" \"CentOS',
+#              'facter.productname\" \"PowerEdge C6620',
+#            ]
+#          }
+#        }
+#      }
+#    }
+#
 define collectd::config::chain (
   Enum['precache', 'postcache', 'none'] $type     = 'none',
   # lint:ignore:empty_string_assignment
-  String                                $settings = '',
+  Variant[String,Hash]                  $settings = '',
   # lint:endignore
   Array[String]                         $targets  = [],
   Array[String]                         $matches  = [],
 ) {
 
+  case $settings {
+    String: {
+      $settings_r = $settings
+    }
+    Hash,Array: {
+      $settings_r = collectd_dsl($settings)
+    }
+    default: {
+      fail 'Unsupported datatype for $collectd::config::chain::settings'
+    }
+  }
   $builtin_targets = ['return', 'stop', 'write', 'jump']
   $builtin_matches = []
   realize_collectd_plugins($targets, 'target_', $builtin_targets)
@@ -52,7 +82,7 @@ define collectd::config::chain (
 
   assert_type(Stdlib::Absolutepath, $collectd::config::filtersconfdir)
 
-  $ensure = $settings ? {
+  $ensure = $settings_r ? {
     ''      => absent,
     default => present,
   }
@@ -67,7 +97,7 @@ define collectd::config::chain (
       content => inline_template('# file managed by puppet
 # filter chain ruleset "Collectd::Config::Chain[<%= @name %>]"
 <Chain "<%= @name %>">
-<%= @settings %>
+<%= @settings_r %>
 </Chain>
 '),
     }
@@ -87,7 +117,7 @@ define collectd::config::chain (
       notify  => Service['collectd'],
       content => inline_template('
 # filter chain ruleset "Collectd::Config::Chain[<%= @name %>]"
-<%= @settings %>
+<%= @settings_r %>
 '),
     }
   }
