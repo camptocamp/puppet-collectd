@@ -73,7 +73,7 @@ class collectd::setup::settings {
       $libmicrohttpd = 'libmicrohttpd10'
     }
 
-    if ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '9') >= 0) or ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemmajrelease, '19.04') >= 0) {
+    if ($::operatingsystem == 'Debian' and versioncmp($::operatingsystemmajrelease, '10') >= 0) or ($::operatingsystem == 'Ubuntu' and versioncmp($::operatingsystemmajrelease, '19.04') >= 0) {
       $libvarnishapi = 'libvarnishapi2'
     }else{
       $libvarnishapi = 'libvarnishapi1'
